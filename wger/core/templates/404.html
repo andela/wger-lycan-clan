@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load i18n staticfiles %}
+
+{% block title %}{% trans "Page not found" %}{% endblock %}
+
+{% block content %}
+<p>{% trans "The page you requested does not exist." %}</p>
+{% endblock %}

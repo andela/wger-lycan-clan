@@ -1,0 +1,39 @@
+{% load i18n %}
+
+<ul class="pagination">
+    {% if page.has_previous %}
+        <li>
+            <a href="?page={{ page.previous_page_number }}"
+               class="load-maincontent">« {% trans "previous" %}</a>
+        </li>
+    {% else %}
+        <li class="disabled">
+            <a href="#">« {% trans "previous" %}</a>
+        </li>
+    {% endif %}
+    
+    {% for i in page_range %}
+        {% if page.number != i %}
+            <li>
+            <a href="?page={{ i }}"
+               class="load-maincontent">{{i}}</a>
+           </li>
+        {% else %}
+            <li class="active">
+                <a href="#">{{i}}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+    
+        {% if page.has_next %}
+            <li>
+                <a href="?page={{ page.next_page_number }}"
+                   class="load-maincontent">{%trans "next" %} »</a>
+            </li>
+        {% else %}
+            <li class="disabled">
+                <a href="#">{%trans "next" %} »</a>
+            </li>
+        {% endif %}
+</ul>
+

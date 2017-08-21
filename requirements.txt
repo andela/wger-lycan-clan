@@ -1,0 +1,30 @@
+#
+# Requirements for wger for production
+#
+
+Django>=1.9,<1.10
+django-recaptcha
+reportlab
+django_mobile
+django-formtools>=1.0,<1.1
+bleach
+python-mimeparse
+pillow
+easy-thumbnails
+django_compressor
+icalendar
+django-bootstrap-breadcrumbs
+sphinx
+django-sortedm2m
+django-bower
+invoke
+requests
+
+# REST API
+djangorestframework>=3.2,<3.3
+django-filter
+django-tastypie
+django-cors-headers
+
+# Python3 compatibility
+six

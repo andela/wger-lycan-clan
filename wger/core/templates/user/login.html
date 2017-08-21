@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load i18n staticfiles wger_extras %}
+
+{% block title %}{% trans "Login" %}{% endblock %}
+
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+<form action="{% url 'core:user:login' %}{% if next %}?next={{next}}{% endif %}"
+      method="post"
+      class="form-horizontal">
+    {% trans 'Login' as submit_text %}
+    {% render_form_fields form submit_text %}
+</form>
+{% endblock %}
+
+
+{% block sidebar %}
+<h4>{% trans "No account?" %}</h4>
+<p>
+    <a href="{% url 'core:user:registration' %}" class="btn btn-block btn-default">
+        <span class="{% fa_class 'sign-in' %}"></span>
+        {% trans "Register" %}
+    </a>
+</p>
+
+<h4>{% trans "Forgot password?" %}</h4>
+<p>
+    <a href="{% url 'core:user:password_reset' %}" class="btn btn-block btn-default">
+        <span class="{% fa_class 'key' %}"></span>
+        {% trans "Reset password" %}
+    </a>
+</p>
+{% endblock %}
