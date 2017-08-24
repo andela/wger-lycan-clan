@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load wger_extras %}
+
+{% block header %}
+<style>
+div.table {
+    display:table;
+    margin-top: 1em;
+}
+div.table > div {
+    display:table-row;
+}
+div.table > div > div {
+    display:table-cell;
+    padding-left: 1em;
+}
+div.bmi-legend {
+    width:1em;
+    height:1em;
+}
+</style>
+
+
+<script>
+$(document).ready(function () {
+
+    wgerRenderBodyMassIndex({% if flavour = 'mobile'%}$('#content').width() * 0.95{% endif %});
+
+    /*
+     * Process the form
+     */
+    $("#bmi-form").click(function(e){
+        e.preventDefault();
+        wgerRenderBodyMassIndex({% if flavour = 'mobile'%}$('#content').width() * 0.95{% endif %});
+    });
+
+});
+</script>
+
+
+
+
+{% endblock %}
+
+<!--
+        Title
+-->
+{% block title %}{% trans "BMI calculator" %}{% endblock %}
+
+
+<!--
+        Main Content
+-->
+{% block content %}
+
+<form action="{% url 'nutrition:bmi:calculate' %}"
+      method="post"
+      class="form-horizontal"
+      id="bmi-form">
+    {% trans 'Calculate' as submit_text %}
+    {% render_form_fields form submit_text %}
+</form>
+
+<div id="bmi-result-container" style="display:hidden;">
+    <h3>{% trans 'Results' %}</h3>
+    <p>{% trans 'Your BMI is: ' %} <strong><span id="bmi-result-value">{{user.userprofile.calculate_bmi|floatformat:1}}</span></strong></p>
+</div>
+
+
+
+<div id="bmi-chart"></div>
+
+
+<h4>{% trans "Legend" %}</h4>
+<div class="table">
+    <div>
+        <div><div class="bmi-legend" style="background-color:#800000;">&nbsp;</div></div>
+        <div>{% trans "Adipositas III" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#ff0000;">&nbsp;</div></div>
+        <div>{% trans "Adipositas II" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#ff7f2a;">&nbsp;</div></div>
+        <div>{% trans "Adipositas I" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#ffff00;">&nbsp;</div></div>
+        <div>{% trans "Overweight" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#00ff00;">&nbsp;</div></div>
+        <div>{% trans "Normal weight" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#00ffff;">&nbsp;</div></div>
+        <div>{% trans "Slight underweight" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#0000ff;">&nbsp;</div></div>
+        <div>{% trans "Moderate underweight" %}</div>
+    </div>
+    <div>
+        <div><div class="bmi-legend" style="background-color:#000080;">&nbsp;</div></div>
+        <div>{% trans "Strong underweight" %}</div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+<!--
+        Side bar
+-->
+{% block sidebar %}
+<h4>Info</h4>
+<p>
+{% blocktrans %}Use the form to calculate your BMI (Body Mass Index).
+If you have entered data in the weight section, the last entry will
+be used automatically. Otherwise the weight you enter here will be saved
+in a new entry.{% endblocktrans %}
+</p>
+{% endblock %}
