@@ -15,17 +15,12 @@ sudo: false
 # Python versions to test
 python:
   - "2.7"
-  - "3.4"
   - "3.5"
 
 # Manually define here the combinations environment variables to test
 # https://github.com/travis-ci/travis-ci/issues/1519
 env:
   - TEST_MOBILE=True  DB=postgresql TRAVIS_NODE_VERSION="4"
-  - TEST_MOBILE=True  DB=sqlite     TRAVIS_NODE_VERSION="4"
-  - TEST_MOBILE=False DB=postgresql TRAVIS_NODE_VERSION="4"
-  - TEST_MOBILE=False DB=sqlite     TRAVIS_NODE_VERSION="4"
-
 # Install the application
 install:
   # Update nvm and set wanted Node version.
@@ -43,7 +38,6 @@ install:
   - if [[ "$DB" = "postgresql" ]]; then pip install psycopg2; fi
 
   # Setup application
-  - if [[ "$DB" = "sqlite" ]]; then invoke create_settings; fi
   - if [[ "$DB" = "postgresql" ]]; then invoke create_settings --database-type postgresql; fi
 
 # Create test databases
