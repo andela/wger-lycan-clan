@@ -35,13 +35,12 @@ install:
   # Install requirements
   - pip install -r requirements_devel.txt
   - npm install
-  - cd wger
   - if [[ "$DB" = "postgresql" ]]; then pip install psycopg2; fi
 
   # Setup application
-  - if [[ "$DB" = "postgresql" ]]; then invoke create_settings --database-type postgresql; fi
+  - pip install wger
+  - if [[ "$DB" = "postgresql" ]]; then wger create_settings --database-type postgresql; fi
 
-  - cd ..
 
 # Create test databases
 before_script:
