@@ -70,8 +70,12 @@ class RegistrationTestCase(WorkoutManagerTestCase):
         self.user_logout()
 
         # Correct email
-        registration_data['email'] = 'my.email@example.com'
-        response = self.client.post(reverse('core:user:registration'), registration_data)
+        correct_registration_data = {'username': 'myusername',
+                             'password1': 'secret123',
+                             'password2': 'secret123',
+                             'email': 'my.email@example.com',
+                             'g-recaptcha-response': 'PASSED', }
+        response = self.client.post(reverse('core:user:registration'), correct_registration_data)
         count_after = User.objects.count()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(count_before + 1, count_after)
