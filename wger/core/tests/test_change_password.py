@@ -43,7 +43,7 @@ class ChangePasswordTestCase(WorkoutManagerTestCase):
                      'new_password2': 'secret'}
 
         response = self.client.post(reverse('core:user:change-password'), form_data)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         # Check the new password was accepted
         user = User.objects.get(username='test')

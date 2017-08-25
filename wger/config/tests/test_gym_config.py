@@ -34,7 +34,7 @@ class GymConfigTestCase(WorkoutManagerTestCase):
         Test that newly registered users get a gym
         '''
 
-        gym = Gym.objects.get(pk=2)
+        gym = Gym.objects.get(pk=1)
         gym_config = GymConfig.objects.get(pk=1)
         gym_config.default_gym = gym
         gym_config.save()
@@ -69,7 +69,7 @@ class GymConfigTestCase(WorkoutManagerTestCase):
         self.client.post(reverse('core:user:registration'), registration_data)
 
         new_user = User.objects.all().last()
-        self.assertEqual(new_user.userprofile.gym_id, None)
+        self.assertEqual(new_user.userprofile.gym_id, 1)
         self.assertRaises(GymUserConfig.DoesNotExist, GymUserConfig.objects.get, user=new_user)
 
     def test_update_userprofile(self):
