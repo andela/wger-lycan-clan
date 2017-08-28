@@ -1,3 +1,6 @@
+.. image:: https://travis-ci.org/andela/wger-lycan-clan.svg?branch=ch-travis-intergration
+    :target: https://travis-ci.org/andela/wger-lycan-clan
+
 Thank you for downloading wger Workout Manager. wger (ˈvɛɡɐ) is a free, open source web
 application that manages your exercises and personal workouts, weight and diet
 plans. It can also be used as a simple gym management utility, providing different
@@ -66,10 +69,9 @@ Then install the python packages from pypi in the virtualenv::
  $ git clone https://github.com/andela/wger-lycan-clan.git
  $ cd wger
  $ pip install -r requirements.txt  # or requirements_devel.txt to develop
- $ invoke create_settings \
-          --settings-path /home/wger/wger/settings.py \
-          --database-path /home/wger/wger/database.sqlite
- $ invoke bootstrap_wger \
+ $ invoke create-settings --settings-path /home/wger/wger/settings.py
+ $ invoke create-settings --database-path /home/wger/wger/database.sqlite
+ $ invoke bootstrap-wger \
           --settings-path /home/wger/wger/settings.py \
           --no-start-server
  $ python manage.py runserver
