@@ -319,7 +319,7 @@ THUMBNAIL_ALIASES = {
 # Django compressor
 #
 
-STATIC_ROOT = ''
+STATIC_ROOT = os.path.join(SITE_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
