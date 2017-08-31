@@ -88,6 +88,9 @@ INSTALLED_APPS = (
 
     # django-bower for installing bower packages
     'djangobower',
+
+    # Social authentication library for django
+    'social_django',
 )
 
 # added list of external libraries to be installed by bower
@@ -103,6 +106,8 @@ BOWER_INSTALLED_APPS = (
     'sortablejs#1.4.x',
     'tinymce',
     'tinymce-dist',
+
+
 )
 
 
@@ -128,13 +133,25 @@ MIDDLEWARE_CLASSES = (
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
+
+    # Middle ware to handle exceptions by python social auth
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+
 )
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'wger.utils.helpers.EmailAuthBackend'
+    'wger.utils.helpers.EmailAuthBackend',
+    # Authentication backends
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2'
+
 )
 
+# FACEBOOK APP DETAILS
+SOCIAL_AUTH_FACEBOOK_KEY = '1908129849436187'
+SOCIAL_AUTH_FACEBOOK_SECRET = '28e870a40b47f6ee12837978a4e28d51'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -156,7 +173,11 @@ TEMPLATES = [
                 'django_mobile.context_processors.flavour',
 
                 # Breadcrumbs
-                'django.template.context_processors.request'
+                'django.template.context_processors.request',
+                # python social auth context processors
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
+
             ],
             'loaders': [
                 # Django mobile
@@ -350,8 +371,19 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',
                                 'rest_framework.filters.OrderingFilter',)
 }
-
-
+#Social login pipeline to crete
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 #
 # CORS headers: allow all hosts to access the API
 #
