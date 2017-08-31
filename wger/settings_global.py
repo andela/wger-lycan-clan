@@ -134,7 +134,7 @@ MIDDLEWARE_CLASSES = (
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
 
-    # Middle ware to handle exceptions by python social auth
+    # Middle ware to handle exceptions by python social auth when logging in
     'social_django.middleware.SocialAuthExceptionMiddleware',
 
 )
@@ -142,18 +142,26 @@ MIDDLEWARE_CLASSES = (
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'wger.utils.helpers.EmailAuthBackend',
-    # Authentication backends
+    # Authentication backends for social networks
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.facebook.FacebookOAuth2'
 
 )
 
-# FACEBOOK APP DETAILS
+# FACEBOOK APP SECRET AND KEY
 SOCIAL_AUTH_FACEBOOK_KEY = '1908129849436187'
 SOCIAL_AUTH_FACEBOOK_SECRET = '28e870a40b47f6ee12837978a4e28d51'
+
+# TWITTER APP SECRET AND KEY
 SOCIAL_AUTH_TWITTER_KEY = 'a1POmrbatusfKUmPKdilsMlnu'
 SOCIAL_AUTH_TWITTER_SECRET = 'DfDWerAn98GO8Q7Rb4yLnLUX9zvSqE7JpdTMyIM57N5HJkfuOV'
+
+# GMAIL APP SECRET AND KEY
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1093398076495-ck7amo1jon48mgc0f7k9ogbgislg09ti.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'wqFxbr8ccN1YWZIk__8dG5uk'
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -176,6 +184,7 @@ TEMPLATES = [
 
                 # Breadcrumbs
                 'django.template.context_processors.request',
+
                 # python social auth context processors
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
@@ -373,7 +382,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',
                                 'rest_framework.filters.OrderingFilter',)
 }
-#Social login pipeline to crete
+#Social login pipeline to create a user
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
