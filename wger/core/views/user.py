@@ -38,7 +38,7 @@ from django.views.generic import (
 )
 from django.conf import settings
 from rest_framework.authtoken.models import Token
-
+from social_core.exceptions import AuthForbidden
 from wger.utils.constants import USER_TAB
 from wger.utils.generic_views import WgerFormMixin, WgerMultiplePermissionRequiredMixin
 from wger.utils.user_agents import check_request_amazon, check_request_android
@@ -80,7 +80,11 @@ def login(request):
                             template_name='user/login.html',
                             authentication_form=UserLoginForm,
                             extra_context=context)
-
+def load_user(strategy, backend, details,*args,**kwargs):
+    email = details['email']
+    users = strategy.storage.user.get_users_by_email(email)
+    if users and len(users) == 1:
+        return {'user': users[0]}
 
 @login_required()
 def delete(request, user_pk=None):
