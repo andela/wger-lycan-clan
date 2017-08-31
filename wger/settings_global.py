@@ -150,16 +150,16 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # FACEBOOK APP SECRET AND KEY
-SOCIAL_AUTH_FACEBOOK_KEY = '1908129849436187'
-SOCIAL_AUTH_FACEBOOK_SECRET = '28e870a40b47f6ee12837978a4e28d51'
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("SOCIAL_AUTH_FACEBOOK_SECRET")
 
 # TWITTER APP SECRET AND KEY
-SOCIAL_AUTH_TWITTER_KEY = 'a1POmrbatusfKUmPKdilsMlnu'
-SOCIAL_AUTH_TWITTER_SECRET = 'DfDWerAn98GO8Q7Rb4yLnLUX9zvSqE7JpdTMyIM57N5HJkfuOV'
+SOCIAL_AUTH_TWITTER_KEY = os.environ.get("SOCIAL_AUTH_TWITTER_KEY")
+SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
 
 # GMAIL APP SECRET AND KEY
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1093398076495-ck7amo1jon48mgc0f7k9ogbgislg09ti.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '0RlMOe4BpGO6ue2FQnbEu_GG'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
 
 
 TEMPLATES = [
@@ -382,7 +382,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',
                                 'rest_framework.filters.OrderingFilter',)
 }
-#Social login pipeline to create a user
+# Social login pipeline to create a user
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
