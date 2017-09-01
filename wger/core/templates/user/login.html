@@ -1,10 +1,42 @@
 {% extends "base.html" %}
+
 {% load i18n staticfiles wger_extras %}
 
 {% block title %}{% trans "Login" %}{% endblock %}
 
 
 {% block header %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style type="text/css">
+  .fa {
+  padding: 20px;
+  font-size: 30px;
+  width: 30px;
+  text-align: center;
+  text-decoration: none;
+  margin: 5px 2px;
+  border-radius: 50%;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-facebook {
+  background: #3B5998;
+  color: white;
+}
+
+.fa-twitter {
+  background: #55ACEE;
+  color: white;
+}
+
+.fa-google {
+  background: #dd4b39;
+  color: white;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -15,9 +47,9 @@
     {% render_form_fields form submit_text %}
 </form>
 <!-- Social login buttons -->
-  <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
-  <a href="{% url 'social:begin' 'twitter' %}">Login with Twitter</a>
-  <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Gmail</a>
+  <a href="{% url 'social:begin' 'facebook' %}" class="fa fa-facebook"></a>
+  <a href="{% url 'social:begin' 'twitter' %}" class="fa fa-twitter"></a>
+  <a href="{% url 'social:begin' 'google-oauth2' %}" class="fa fa-google"></a>
 
 
 {% endblock %}
