@@ -2,10 +2,12 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'bower_components/datatables/media/css/dataTables.bootstrap.min.css' %}">
 <script src="{% static 'bower_components/datatables/media/js/jquery.dataTables.min.js' %}" ></script>
-<script src="{% static 'bower_components/datatables/media/js/dataTables.bootstrap.min.js' %}" ></script>
+<script src="{% static 'bower_components/datatables/media/js/dataTables.bootstra.min.js' %}" ></script>
+<script src="{% static 'js/user_list.js' %}" ></script>
 <script>
 $(document).ready( function () {
     /* Make table sortable */
+    $('.Inactive').css('background','beige');
     $('#main_member_list').DataTable({
         paging: false,
         bFilter: true,
@@ -14,17 +16,24 @@ $(document).ready( function () {
 });
 </script>
 
+<select onchange="return filters()" class="form-control" style="width: 20%" id="select_filter">
+  <option value="All">All Users</option>
+  <option value="True">Active Users</option>
+  <option value="False">Inactive Users</option>
+</select>
+
 <table class="table table-hover" id="main_member_list">
 <thead>
 <tr>
     {% for key in user_table.keys %}
         <th>{{ key }}</th>
     {% endfor %}
+    <th style="display: none;"></th>
 </tr>
 </thead>
 <tbody>
 {% for current_user in user_table.users %}
-<tr>
+<tr class="{%  if current_user.obj.is_active %} Active {% else %} Inactive {% endif %}">
     <td>
         {{current_user.obj.pk}}
     </td>
@@ -36,6 +45,9 @@ $(document).ready( function () {
     </td>
     <td data-order="{{current_user.last_log|date:'U'}}">
         {{current_user.last_log|default:'-/-'}}
+    </td>
+    <td style="display:none">
+      {{current_user.obj.is_active}}
     </td>
     {% if show_gym %}
     <td>
