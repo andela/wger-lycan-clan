@@ -15,12 +15,12 @@ function filters() {
     td = tr[i].getElementsByTagName('td')[4];
     if (filter === 'ALL') {
       $('.Inactive').css('background', 'beige');
-      tr[i].style.display = '';   
+      tr[i].style.display = '';
     } else if (td && (td.innerHTML.toUpperCase().indexOf(filter) > -1)) {
-        tr[i].style.display = '';
+      tr[i].style.display = '';
     } else {
-        tr[i].style.display = 'none';
-    } 
+      tr[i].style.display = 'none';
+    }
   }
 }
 console.log(filters());
