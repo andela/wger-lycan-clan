@@ -107,7 +107,6 @@ BOWER_INSTALLED_APPS = (
     'tinymce',
     'tinymce-dist',
 
-
 )
 
 
@@ -137,6 +136,7 @@ MIDDLEWARE_CLASSES = (
     # Middle ware to handle exceptions by python social auth when logging in
     'social_django.middleware.SocialAuthExceptionMiddleware',
 
+
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -160,7 +160,6 @@ SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
 # GMAIL APP SECRET AND KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
-
 
 TEMPLATES = [
     {
@@ -350,7 +349,8 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
-STATIC_ROOT = ''
+
+STATIC_ROOT = os.path.join(SITE_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
@@ -382,6 +382,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',
                                 'rest_framework.filters.OrderingFilter',)
 }
+
 # Social login pipeline to create a user
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -395,6 +396,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
 #
 # CORS headers: allow all hosts to access the API
 #
