@@ -1,10 +1,32 @@
 {% extends "base.html" %}
+
 {% load i18n staticfiles wger_extras %}
 
 {% block title %}{% trans "Login" %}{% endblock %}
 
 
 {% block header %}
+<style type="text/css">
+    .register {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+    .forgot-password {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    .link {
+        padding: 0px 10px;
+        word-wrap: normal;
+        display: inline-block;
+    }
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -14,23 +36,39 @@
     {% trans 'Login' as submit_text %}
     {% render_form_fields form submit_text %}
 </form>
+
+
+<div class="register">
+    <h4>{% trans "No account?" %}</h4>
+    <a href="{% url 'core:user:registration' %}" class="link">
+        {% trans "Register" %}
+    </a>
+</div>
+<div class="forgot-password">
+    <h4>{% trans "Forgot password?" %}</h4>
+
+    <a href="{% url 'core:user:password_reset' %}" class="link">
+        {% trans "Reset password" %}
+    </a>
+
+
+</div>
+
 {% endblock %}
 
 
 {% block sidebar %}
-<h4>{% trans "No account?" %}</h4>
-<p>
-    <a href="{% url 'core:user:registration' %}" class="btn btn-block btn-default">
-        <span class="{% fa_class 'sign-in' %}"></span>
-        {% trans "Register" %}
-    </a>
-</p>
 
-<h4>{% trans "Forgot password?" %}</h4>
-<p>
-    <a href="{% url 'core:user:password_reset' %}" class="btn btn-block btn-default">
-        <span class="{% fa_class 'key' %}"></span>
-        {% trans "Reset password" %}
-    </a>
-</p>
+<!-- Social login buttons -->
+<div class="social">
+    <p><a href="{% url 'social:begin' 'facebook' %}" class="btn btn-block btn-social btn-facebook">
+        <span class="fa fa-facebook"></span>Sign in with Facebook
+    </a></p>
+    <p><a href="{% url 'social:begin' 'twitter' %}" class="btn btn-block btn-social btn-twitter">
+        <span class="fa fa-twitter"> </span> Sign in with Twitter
+    </a></p>
+    <p><a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-block btn-social btn-google">
+        <span class="fa fa-google"></span>Sign in with Gmail
+    </a></p>
+</div>
 {% endblock %}

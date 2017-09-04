@@ -88,6 +88,9 @@ INSTALLED_APPS = (
 
     # django-bower for installing bower packages
     'djangobower',
+
+    # Social authentication library for django
+    'social_django',
 )
 
 # added list of external libraries to be installed by bower
@@ -103,6 +106,7 @@ BOWER_INSTALLED_APPS = (
     'sortablejs#1.4.x',
     'tinymce',
     'tinymce-dist',
+
 )
 
 
@@ -128,12 +132,34 @@ MIDDLEWARE_CLASSES = (
     # Django mobile
     'django_mobile.middleware.MobileDetectionMiddleware',
     'django_mobile.middleware.SetFlavourMiddleware',
+
+    # Middle ware to handle exceptions by python social auth when logging in
+    'social_django.middleware.SocialAuthExceptionMiddleware',
+
+
 )
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'wger.utils.helpers.EmailAuthBackend'
+    'wger.utils.helpers.EmailAuthBackend',
+    # Authentication backends for social networks
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2'
+
 )
+
+# FACEBOOK APP SECRET AND KEY
+SOCIAL_AUTH_FACEBOOK_KEY = os.environ.get("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = os.environ.get("SOCIAL_AUTH_FACEBOOK_SECRET")
+
+# TWITTER APP SECRET AND KEY
+SOCIAL_AUTH_TWITTER_KEY = os.environ.get("SOCIAL_AUTH_TWITTER_KEY")
+SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
+
+# GMAIL APP SECRET AND KEY
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
 
 TEMPLATES = [
     {
@@ -156,7 +182,12 @@ TEMPLATES = [
                 'django_mobile.context_processors.flavour',
 
                 # Breadcrumbs
-                'django.template.context_processors.request'
+                'django.template.context_processors.request',
+
+                # python social auth context processors
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
+
             ],
             'loaders': [
                 # Django mobile
@@ -318,6 +349,7 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
+
 STATIC_ROOT = os.path.join(SITE_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
@@ -351,6 +383,19 @@ REST_FRAMEWORK = {
                                 'rest_framework.filters.OrderingFilter',)
 }
 
+# Social login pipeline to create a user
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 
 #
 # CORS headers: allow all hosts to access the API
