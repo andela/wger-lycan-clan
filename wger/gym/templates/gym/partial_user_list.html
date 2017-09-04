@@ -28,7 +28,8 @@ $(document).ready( function () {
     {% for key in user_table.keys %}
         <th>{{ key }}</th>
     {% endfor %}
-    <th style="display: none;"></th>
+    <th style="display: none;">Status</th>
+    <th style="display: ;">Status</th>
 </tr>
 </thead>
 <tbody>
@@ -46,9 +47,7 @@ $(document).ready( function () {
     <td data-order="{{current_user.last_log|date:'U'}}">
         {{current_user.last_log|default:'-/-'}}
     </td>
-    <td style="display:none">
-      {{current_user.obj.is_active}}
-    </td>
+    <td style="display: none;"> {{ current_user.obj.is_active }} </td>
     {% if show_gym %}
     <td>
         {% if current_user.obj.userprofile.gym_id %}
@@ -60,6 +59,14 @@ $(document).ready( function () {
         {% endif %}
     </td>
     {% endif %}
+    <td style="display:">
+      {% if current_user.obj.is_active %}
+      <span class="label label-success">Active</span>
+      {% else %}
+      <span class="label label-danger">Inactive</span>
+
+      {% endif %}
+    </td>
 </tr>
 {% endfor %}
 </tbody>
