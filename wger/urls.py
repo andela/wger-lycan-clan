@@ -147,7 +147,9 @@ urlpatterns = i18n_patterns(
     url(r'^sitemap\.xml$',
         sitemap,
         {'sitemaps': sitemaps},
-        name='sitemap')
+        name='sitemap'),
+    # urls that handle authentication backends
+    url('^oauth', include('social_django.urls', namespace='social'))
 )
 
 #
