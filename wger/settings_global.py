@@ -106,7 +106,6 @@ BOWER_INSTALLED_APPS = (
     'sortablejs#1.4.x',
     'tinymce',
     'tinymce-dist',
-
 )
 
 
@@ -135,12 +134,11 @@ MIDDLEWARE_CLASSES = (
 
     # Middle ware to handle exceptions by python social auth when logging in
     'social_django.middleware.SocialAuthExceptionMiddleware',
-
-
 )
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+
     'wger.utils.helpers.EmailAuthBackend',
     # Authentication backends for social networks
     'social_core.backends.google.GoogleOAuth2',
@@ -160,6 +158,11 @@ SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
 # GMAIL APP SECRET AND KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+=======
+    'wger.utils.helpers.EmailAuthBackend'
+)
+
 
 TEMPLATES = [
     {
@@ -186,8 +189,7 @@ TEMPLATES = [
 
                 # python social auth context processors
                 'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
-
+                'social_django.context_processors.login_redirect'
             ],
             'loaders': [
                 # Django mobile
