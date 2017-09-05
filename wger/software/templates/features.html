@@ -18,14 +18,55 @@
 {# Content #}
 {#         #}
 {% block content %}
-    <header>
+    <header id="header">
+      <div class="overlay"></div>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">WGER</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#header">Home</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#about">Features</a></li>
+              {% if allow_guest_users and not user.is_authenticated %}
+                  <li>
+                    <a href="{% url 'core:user:demo-entries' %}">
+                        {% trans "Demo" %}
+                    </a>
+                  </li>
+              {% endif %}
+
+              {% if not user.is_authenticated or user.userprofile.is_temporary %}
+                  {% if allow_registration %}
+                      <li>
+                        <a href="{% url 'core:user:registration' %}">
+                          {% trans "Register" %}
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  <li>
+                    <a href="{% url 'core:user:login' %}">
+                        {% trans "Login" %}
+                    </a>
+                  </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
         <div class="container">
             <div class="intro-text">
                 <div class="intro-heading">{% trans "Welcome to wger" %}</div>
-                <div class="intro-lead-in">{% trans "Your body." %}</div>
-                <div class="intro-lead-in">{% trans "Your workouts." %}</div>
-                <div class="intro-lead-in">{% trans "Your data." %}</div>
-                <div class="intro-lead-in">{% trans "Your progress." %}</div>
+                <div id="typed-strings">
+                  <div class="intro-lead-in">{% trans "Your Body." %}</div>
+                  <div class="intro-lead-in">{% trans "Your Workouts." %}</div>
+                  <div class="intro-lead-in">{% trans "Your Data." %}</div>
+                  <div class="intro-lead-in">{% trans "Your Progress." %}</div>
+                </div>
+                <span id="typed"></span>
+
+                <div class='btn-container hidden'>
                 {% if allow_guest_users and not user.is_authenticated %}
                     <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow" style="margin-top: 1em;">
                         {% trans "Try it now" %}
