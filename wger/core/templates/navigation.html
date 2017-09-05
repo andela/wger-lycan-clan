@@ -177,17 +177,6 @@
                     {% if not user.is_authenticated or user.userprofile.is_temporary %}
                         <ul class="nav navbar-nav pull-right">
                             <li class="divider-vertical"></li>
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    {% trans "Login" %} / {% trans "Register" %}
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="{% url 'core:user:login' %}">{% trans "Login" %}</a></li>
-                                    <li><a href="{% url 'core:user:registration' %}">{% trans "Register" %}</a></li>
-                                    <li><a href="{% url 'core:user:password_reset' %}">{% trans "Reset password" %}</a></li>
-                                </ul>
-                            </li>
                         </ul>
                     {% else %}
                         <ul class="nav navbar-nav navbar-right">
