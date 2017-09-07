@@ -91,6 +91,9 @@ INSTALLED_APPS = (
 
     # Social authentication library for django
     'social_django',
+
+    # Permissions library fro django
+    'guardian'
 )
 
 # added list of external libraries to be installed by bower
@@ -145,7 +148,9 @@ AUTHENTICATION_BACKENDS = (
     # Authentication backends for social networks
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
-    'social_core.backends.facebook.FacebookOAuth2'
+    'social_core.backends.facebook.FacebookOAuth2',
+    # Permissions backend
+    'guardian.backends.ObjectPermissionBackend',
 
 )
 
@@ -160,6 +165,9 @@ SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
 # GMAIL APP SECRET AND KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
+# Guardian permission denied setting
+GUARDIAN_RAISE_403 = True
 
 
 TEMPLATES = [
@@ -380,7 +388,13 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',
-                                'rest_framework.filters.OrderingFilter',)
+                                'rest_framework.filters.OrderingFilter',),
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.UserRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'user': '1/day'
+    }
 }
 # Social login pipeline to create a user
 SOCIAL_AUTH_PIPELINE = (
