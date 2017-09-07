@@ -141,19 +141,15 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         created_user = User.objects.get(pk=serializer.data['id'])
-        ApiUsers.objects.create(app_owner=request.user,app_user=created_user)
+        ApiUsers.objects.create(app_owner=request.user, app_user=created_user)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+
 class ApiUserViewSet(viewsets.ModelViewSet):
     serializer_class = ApiUserSerializer
-
 
     def list(self, request, *args, **kwargs):
         queryset = ApiUsers.objects.filter(app_owner=request.user.id)
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-
-
-
-

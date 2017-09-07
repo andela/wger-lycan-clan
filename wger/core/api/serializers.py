@@ -95,8 +95,6 @@ class UserSerializer(serializers.ModelSerializer):
 class ApiUserSerializer(serializers.ModelSerializer):
     app_user = UserSerializer()
 
-
     class Meta:
         model = ApiUsers
-        fields =('id','app_user',)
-
+        fields = ('id', 'app_user',)

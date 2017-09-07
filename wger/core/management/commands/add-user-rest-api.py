@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User
 from guardian.shortcuts import assign_perm
 
+
 class Command(BaseCommand):
     '''
     Helper admin command to clean up demo users, to be called e.g. by cron
@@ -16,5 +17,3 @@ class Command(BaseCommand):
         user = User.objects.get(username=options['username'])
         assign_perm('auth.add_user', user)
         assign_perm('auth.change_user', user)
-
-
