@@ -647,7 +647,8 @@ class WeightUnit(models.Model):
         '''
         return self.id in (1, 2)
 
+
 # Model to show users created via api
 class ApiUsers(models.Model):
-    app_owner = models.ForeignKey(User,related_name='app_owner')
-    app_user = models.ForeignKey(User,related_name='app_user')
+    app_owner = models.ForeignKey(User, related_name='app_owner')
+    app_user = models.ForeignKey(User, related_name='app_user')
