@@ -25,8 +25,8 @@ from wger.core.models import (
     DaysOfWeek,
     License,
     RepetitionUnit,
-    WeightUnit
-
+    WeightUnit,
+    ApiUsers
 )
 
 
@@ -90,4 +90,13 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         extra_kwargs = {'password': {'write_only': True}}
+
+
+class ApiUserSerializer(serializers.ModelSerializer):
+    app_user = UserSerializer()
+
+
+    class Meta:
+        model = ApiUsers
+        fields =('id','app_user',)
 
