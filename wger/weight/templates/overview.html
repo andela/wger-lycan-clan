@@ -64,7 +64,7 @@ overview" %}{% endblock %} {# #} {# Header #} {# #} {% block header %}
             </a>
         </li>
         <li>
-            <a href="#" {% auto_link_css flavour %}>
+            <a href="{% url 'weight:authorize-fitbit' %}" {% auto_link_css flavour %}>
                 <span class="{% fa_class 'download' %}"></span>
                 {% trans "Import from Fitbit" %}
             </a>
