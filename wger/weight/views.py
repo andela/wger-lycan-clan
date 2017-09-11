@@ -89,7 +89,8 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(WeightUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('weight:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'weight:edit', kwargs={'pk': self.object.id})
         context['title'] = _('Edit weight entry for the %s') % self.object.date
 
         return context
@@ -161,6 +162,13 @@ def overview(request, username=None):
     return render(request, 'overview.html', template_data)
 
 
+def authorize_fitbit(request):
+    '''
+    Shows the page to authorize access to fitbit.abs
+    '''
+    return render(request, 'authenticate_fitbit.html')
+
+
 @api_view(['GET'])
 def get_weight_data(request, username=None):
     '''
@@ -208,7 +216,8 @@ class WeightCsvImportFormPreview(FormPreview):
         return context
 
     def done(self, request, cleaned_data):
-        weight_list, error_list = helpers.parse_weight_csv(request, cleaned_data)
+        weight_list, error_list = helpers.parse_weight_csv(
+            request, cleaned_data)
         WeightEntry.objects.bulk_create(weight_list)
         return HttpResponseRedirect(reverse('weight:overview',
                                             kwargs={'username': request.user.username}))
