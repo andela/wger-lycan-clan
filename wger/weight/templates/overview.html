@@ -1,5 +1,9 @@
-{% extends "base.html" %} {% load i18n staticfiles wger_extras %} {# #} {# Title #} {# #} {% block title %}{% trans "Weight
-overview" %}{% endblock %} {# #} {# Header #} {# #} {% block header %}
+{% extends "base.html" %} 
+{% load i18n staticfiles wger_extras %} {# #} {# Title #} {# #} 
+{% block title %} 
+{% trans "Weight overview" %} 
+{% endblock %} {# #} {# Header #} {# #} 
+{% block header %}
 <script src="{% static 'js/weight.js' %}"></script>
 {% endblock %} {# #} {# Content #} {# #} {% block content %}
 <div id="current-username" data-current-username="{{ owner_user.username }}"></div>
