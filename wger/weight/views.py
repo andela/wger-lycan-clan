@@ -17,6 +17,7 @@
 import logging
 import csv
 import datetime
+import requests
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -42,6 +43,8 @@ from wger.weight.models import WeightEntry
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
+
+from fitbit import FitbitOauth2Client, Fitbit
 
 
 logger = logging.getLogger(__name__)
@@ -167,6 +170,34 @@ def authorize_fitbit(request):
     Shows the page to authorize access to fitbit.abs
     '''
     return render(request, 'authenticate_fitbit.html')
+
+
+@login_required
+def get_fitbit_data(request, code=None):
+    code = request.GET.get("code", "")
+
+    client_id, client_secret = os.get_env(
+        'FITBIT_CLIENT_ID'), os.get_env('FITBIT_CLIENT_SECRET')
+
+    fitbit_client = FitbitOauth2Client(client_id, client_secret)
+
+    payload = {'client_id': '228L8X',
+               'client_secret': '71e3164d74161f907b10e4ffbe3f2255',
+               'code': code,
+               'redirect_uri': 'https://localhost:8000/en/software/features',
+               'grant_type': 'authorization_code'
+               }
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    response = requests.post(
+        fitbit_client.request_token_url, payload, headers=headers).json()
+    if 'access_token' in response:
+        token, user_id = response['access_token'], response['user_id']
+        headers['Authorization'] = 'Bearer ' + token
+        weight_response = requests.get(
+            'https://api.fitbit.com/1/user/' + user_id + '/profile.json', headers=headers)
+        weight = weight_response.json()['user']['weight']
 
 
 @api_view(['GET'])
