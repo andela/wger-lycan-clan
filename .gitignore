@@ -66,3 +66,6 @@ node_modules
 
 # Apple files
 .DS_Store
+
+# SSH Certificate
+server.crt
