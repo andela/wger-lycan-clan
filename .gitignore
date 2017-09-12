@@ -63,3 +63,6 @@ target/
 # External Libraries
 wger/core/static/bower_components
 node_modules
+
+# Apple files
+.DS_Store
