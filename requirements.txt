@@ -25,6 +25,8 @@ invoke
 requests
 whitenoise
 gunicorn
+Werkzeug
+pyOpenSSL
 
 
 # REST API
