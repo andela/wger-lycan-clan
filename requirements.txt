@@ -3,6 +3,7 @@
 #
 
 Django>=1.9,<1.10
+django-extensions
 django-recaptcha
 reportlab
 django_mobile
