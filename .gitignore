@@ -69,3 +69,4 @@ node_modules
 
 # SSH Certificate
 server.crt
+server.key
