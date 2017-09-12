@@ -1,12 +1,9 @@
-{% extends "base.html" %} {% load wger_extras %} {% load i18n %} {% block title %} {% trans "Log in to Fitbit" %} {% endblock%} {% block content %}
+{% extends "base.html" %} {% load wger_extras %} {% load i18n %} {% block title %} {% trans "Log in to Fitbit" %} {% endblock%}
+{% block content %}
 <p>
     You are required to allow Wger to access your fitbit data.
 </p>
 <div class="btn-group modify-time-period-controls pull-left" role="group" aria-label="..." style="padding-bottom: 1em;">
-    <button type="button" class="btn btn-default" data-time_period="90">
-        <a href="https://www.fitbit.com/oauth2/authorize?client_id=228L8X&response_type=string&scope=activity+nutrition+heartrate+location+profile+settings&redirect_uri=https%3A%2F%2Flocalhost%3A8000%2Fen%2Fsoftware%2Ffeatures&expires_in=86400">
-            {% trans "Log in to Fitbit" %}
-        </a>
-    </button>
+    <button type="button" class="btn btn-default" data-time_period="90">{% trans "Authorize Fitbit" %}</button>
 </div>
 {% endblock %}
