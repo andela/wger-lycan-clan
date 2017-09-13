@@ -175,7 +175,7 @@ def authorize_fitbit(request):
 
 
 @login_required
-def get_fitbit_data(request, code=None):
+def sync_fitbit_data(request, code=None):
     code = request.GET.get("code", "")
 
     client_id, client_secret = os.getenv(
