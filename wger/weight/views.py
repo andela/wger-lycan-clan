@@ -26,6 +26,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils import formats
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
@@ -199,6 +200,17 @@ def get_fitbit_data(request, code=None):
         weight_response = requests.get(
             'https://api.fitbit.com/1/user/' + user_id + '/profile.json', headers=headers)
         weight = weight_response.json()['user']['weight']
+
+        try:
+            entry = WeightEntry()
+            entry.weight = weight
+            entry.user = request.user
+            entry.date = datetime.datetime.today()
+            entry.save()
+            messages.success(request, _('Successfully synced weight data.'))
+        except Exception as error:
+            if 'UNIQUE constraint failed' in str(error):
+                messages.info(request, _('Already synced for today.'))
 
 
 @api_view(['GET'])
