@@ -18,6 +18,7 @@ import logging
 import csv
 import datetime
 import requests
+import os
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -176,8 +177,8 @@ def authorize_fitbit(request):
 def get_fitbit_data(request, code=None):
     code = request.GET.get("code", "")
 
-    client_id, client_secret = os.get_env(
-        'FITBIT_CLIENT_ID'), os.get_env('FITBIT_CLIENT_SECRET')
+    client_id, client_secret = os.getenv(
+        'FITBIT_CLIENT_ID'), os.getenv('FITBIT_CLIENT_SECRET')
 
     fitbit_client = FitbitOauth2Client(client_id, client_secret)
 
