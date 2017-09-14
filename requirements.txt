@@ -27,6 +27,7 @@ whitenoise
 gunicorn
 Werkzeug
 pyOpenSSL
+fitbit
 
 
 # REST API
