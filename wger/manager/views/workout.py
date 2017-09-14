@@ -17,7 +17,9 @@
 import logging
 import uuid
 import datetime
+import json
 
+from django.core import serializers
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.template.context_processors import csrf
@@ -52,6 +54,38 @@ from wger.utils.helpers import make_token
 
 logger = logging.getLogger(__name__)
 
+
+def send_to_file(data):
+    datax = json.loads(data)
+    print(datax);
+    with open('./data.json', 'w') as f:
+         json.dump(datax, f)
+
+
+@login_required
+def export_workouts(request):
+        '''
+        Exports workouts
+        '''
+        # function to export workouts
+        template_data = {}
+        workouts = Workout.objects.filter(user=request.user)
+        # generate json data
+        data = serializers.serialize("json", workouts)
+        # send json data to a file
+        send_to_file(data);
+        #redirect to workouts overview
+        #Repetive code
+        #--------------------------------------------------
+        template_data = {}
+
+        workouts = Workout.objects.filter(user=request.user)
+        (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
+        template_data['workouts'] = workouts
+        template_data['current_workout'] = current_workout
+        #--------------------------------------------------
+        #Please make it dry
+        return render(request,'workout/overview.html', template_data)
 
 # ************************
 # Workout functions
