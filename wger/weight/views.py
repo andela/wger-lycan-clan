@@ -211,6 +211,7 @@ def sync_fitbit_data(request, code=None):
         except Exception as error:
             if 'UNIQUE constraint failed' in str(error):
                 messages.info(request, _('Already synced for today.'))
+    return render(request, 'overview.html')
 
 
 @api_view(['GET'])
