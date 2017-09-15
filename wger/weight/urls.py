@@ -27,6 +27,15 @@ urlpatterns = [
         login_required(views.WeightAddView.as_view()),
         name='add'),
 
+    url(r'^get-token/$',
+        login_required(views.WeightAddView.get_token),
+        name='get-token'),
+
+    url(r'^get-weight/(?P<token>[\w.@+-_d]+)$',
+        login_required(views.WeightAddView.get_weight),
+        name='get-weight'
+        ),
+
     url(r'^(?P<pk>\d+)/edit/$',
         login_required(views.WeightUpdateView.as_view()),
         name='edit'),
