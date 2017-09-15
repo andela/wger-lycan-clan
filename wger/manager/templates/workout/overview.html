@@ -1,14 +1,7 @@
-{% extends "base.html" %}
-{% load i18n %}
-{% load staticfiles %}
-
-{% block title %}{% trans "Your workouts" %}{% endblock %}
-
-
-{% block content %}
-    <div class="list-group">
-        {% for workout in workouts %}
-            <a href="{{ workout.get_absolute_url }}" class="list-group-item">
+{% extends "base.html" %} {% load i18n %} {% load staticfiles %} {% block title %}{% trans "Your workouts" %}{% endblock %} {% block content %}
+<div class="list-group">
+    {% for workout in workouts %}
+    <a href="{{ workout.get_absolute_url }}" class="list-group-item">
                 <span class="glyphicon glyphicon-chevron-right pull-right"></span>
 
                 {% if workout == current_workout %}
@@ -19,39 +12,76 @@
 
                 <h4 class="list-group-item-heading">{{ workout }}</h4>
                 <p class="list-group-item-text">{{ workout.creation_date }}</p>
-            </a>
-        {% empty %}
-            <a href="{% url 'manager:workout:add' %}" class="list-group-item">
+            </a> {% empty %}
+    <a href="{% url 'manager:workout:add' %}" class="list-group-item">
             {% trans "No workouts found." %}<br>{% trans "Add one now." %}
-            </a>
-        {% endfor %}
-    </div>
-{% endblock %}
+            </a> {% endfor %}
+</div>
 
+<div class="modal fade" id="import-ical-popup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">{% trans "Import workouts" %}</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'manager:workout:import' %}" method="POST" class="form-horizontal" enctype="multipart/form-data" >
+                      {% csrf_token %}
+                        <div class="form-group">
+                            <div>
+                                <label for="id_images" class="col-md-3 control-label">
+                      {% trans "File" %}
+                    </label>
+                            </div>
+                            <div class="col-md-9" style="padding-left: 35px;">
+                                <div class="radio">
+                                    <input type="file" name="import_file" id="import_file" accept=".json, . ">
+                                </div>
+                            </div>
+                        </div>
 
-{% block options %}
-<a href="{% url 'manager:workout:add' %}" class="btn btn-success btn-sm">
+                        <div class="form-group">
+                            <div class="col-md-12">
+                              <button type="submit" class="btn btn-block btn-default">{% trans "Upload" %} </a>
+                            </div>
+                        </div>
+                    </form>
+
+                    <p>
+
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+    {% endblock %} {% block options %}
+    <a href="{% url 'manager:workout:add' %}" class="btn btn-success btn-sm">
     {% trans "Add workout" %}
 </a>
-<div class="btn-group">
-    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="btn-group">
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <span class="fa fa-cog"></span>
         {% trans "Options" %}
     </button>
-    <ul class="dropdown-menu">
-        <li>
-            <a href="{% url 'manager:workout:export' %}">
+        <ul class="dropdown-menu">
+            <li>
+                <a href="{% url 'manager:workout:export' %}">
                 <span class="fa fa-download"></span>
                 {% trans "Export as JSON" %}
             </a>
-        </li>
-        <li>
-            <a href="/">
+            </li>
+            <li>
+                <a data-toggle="modal" data-target="#import-ical-popup">
                 <span class="fa fa-upload"></span>
                 {% trans "Import from JSON" %}
             </a>
-        </li>
-    </ul>
-</div>
+            </li>
+        </ul>
+    </div>
 
-{% endblock %}
+    {% endblock %}

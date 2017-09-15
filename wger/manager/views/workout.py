@@ -70,6 +70,21 @@ def export_workouts(request):
         response['Content-Disposition'] = 'attachment; filename=data.json'
         return response
 
+def import_workouts(request):
+    file=request.FILES['import_file']
+    data = file.read()
+    f = open('data.json', 'r')
+    for deserialized_object in serializers.deserialize("json", data):
+        deserialized_object.save()
+
+    template_data = {}
+
+    workouts = Workout.objects.filter(user=request.user)
+    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
+    template_data['workouts'] = workouts
+    template_data['current_workout'] = current_workout
+
+    return render(request, 'workout/overview.html', template_data)
 
 # ************************
 # Workout functions
