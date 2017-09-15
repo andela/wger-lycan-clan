@@ -19,6 +19,7 @@ import csv
 import datetime
 import requests
 import os
+import time
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -45,9 +46,11 @@ from wger.weight.models import WeightEntry
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
+from django.shortcuts import redirect
 
 from fitbit import FitbitOauth2Client, Fitbit
-
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 logger = logging.getLogger(__name__)
 
@@ -83,6 +86,15 @@ class WeightAddView(WgerFormMixin, CreateView):
         Return to overview with username
         '''
         return reverse('weight:overview', kwargs={'username': self.object.user.username})
+
+    def get_token(self):
+        return HttpResponse("<script>window.location.replace('/en/weight/get-weight/' + window.location.href.split('#')[1].split('=')[1].split('&')[0]);</script > ")
+
+    def get_weight(self, token):
+        print("  ((-_-))   " * 10)
+        print("Token", token)
+        print("  ((-_-))   " * 10)
+        return redirect('/')
 
 
 class WeightUpdateView(WgerFormMixin, UpdateView):
@@ -176,7 +188,6 @@ def authorize_fitbit(request):
 
 @login_required
 def sync_fitbit_data(request, code=None):
-    code = request.GET.get("code", "")
 
     client_id, client_secret = os.getenv(
         'FITBIT_CLIENT_ID'), os.getenv('FITBIT_CLIENT_SECRET')
@@ -186,7 +197,7 @@ def sync_fitbit_data(request, code=None):
     payload = {'client_id': '228L8X',
                'client_secret': '71e3164d74161f907b10e4ffbe3f2255',
                'code': code,
-               'redirect_uri': 'https://localhost:8000/en/software/features',
+               'redirect_uri': 'https://localhost:8000/en/weight/get-token/',
                'grant_type': 'authorization_code'
                }
     headers = {
@@ -194,12 +205,14 @@ def sync_fitbit_data(request, code=None):
     }
     response = requests.post(
         fitbit_client.request_token_url, payload, headers=headers).json()
+
     if 'access_token' in response:
         token, user_id = response['access_token'], response['user_id']
         headers['Authorization'] = 'Bearer ' + token
         weight_response = requests.get(
             'https://api.fitbit.com/1/user/' + user_id + '/profile.json', headers=headers)
         weight = weight_response.json()['user']['weight']
+        print("The weight:", weight)
 
         try:
             entry = WeightEntry()
