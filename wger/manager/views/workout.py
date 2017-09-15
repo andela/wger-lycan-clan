@@ -18,6 +18,7 @@ import logging
 import uuid
 import datetime
 import json
+import random
 
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404
@@ -76,7 +77,13 @@ def import_workouts(request):
     file = request.FILES['import_file']
     data = file.read()
     f = open('data.json', 'r')
-    for deserialized_object in serializers.deserialize("json", data):
+    # data = (f.read().replace('"user": '+str(request.user.id), '"user": '+str(request.user.id)))
+    import json
+    json1_data = json.loads(f.read())
+    for value in json1_data:
+        value['fields']['user'] = request.user.id
+        value['pk'] = random.randint(50,1909)
+    for deserialized_object in serializers.deserialize("json", json.dumps(json1_data)):
         deserialized_object.save()
 
     template_data = {}
