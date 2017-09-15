@@ -55,6 +55,7 @@ from wger.utils.helpers import make_token
 
 logger = logging.getLogger(__name__)
 
+
 @login_required
 def export_workouts(request):
         '''
@@ -70,8 +71,9 @@ def export_workouts(request):
         response['Content-Disposition'] = 'attachment; filename=data.json'
         return response
 
+
 def import_workouts(request):
-    file=request.FILES['import_file']
+    file = request.FILES['import_file']
     data = file.read()
     f = open('data.json', 'r')
     for deserialized_object in serializers.deserialize("json", data):
@@ -85,6 +87,7 @@ def import_workouts(request):
     template_data['current_workout'] = current_workout
 
     return render(request, 'workout/overview.html', template_data)
+
 
 # ************************
 # Workout functions
