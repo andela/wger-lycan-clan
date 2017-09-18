@@ -110,6 +110,12 @@
                 {% trans "Import from spreadsheet" %}
             </a>
         </li>
+        <li>
+            <a href="{% url 'weight:import-csv' %}" {% auto_link_css flavour %}>
+                <span class="{% fa_class 'download' %}"></span>
+                {% trans "Import from Fitbit" %}
+            </a>
+        </li>
     </ul>
 </div>
 <a href="{% url 'weight:add' %}" class="btn btn-success btn-sm wger-modal-dialog">
