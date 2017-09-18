@@ -17,7 +17,9 @@
 import logging
 import csv
 import datetime
+import fitbit
 
+from django.contrib.staticfiles.templatetags import staticfiles
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
@@ -105,10 +107,35 @@ def get_fitbit_token(request):
     print("dkbfvkdfbvkdfbvkbdfkvbdfkvbdkfbvkdfbvkdfbvjkdfbvkdfjbvkjdfbvkdfbvkjd")
     return HttpResponse(
         "<script src='{src}'></script>".format(
-            src=staticfiles.static('./../static/js/get_fitbit_token.js'
-        )
-    )
-    return redirect('/')
+            src=staticfiles.static('./../static/js/get_fitbit_token.js')
+        ))
+
+@login_required
+def getweight(request, token=None):
+    if token:
+     
+        client_secret = '638c39989b5ef339c16c65ae55304c67'
+        client_key = '228LLX'
+        token = token
+
+        authorized_client = fitbit.Fitbit(client_key, client_secret,
+                                     access_token=token, refresh_token=token)
+        
+        if authorized_client.get_bodyweight()['weight']:
+            weight_data = authorized_client.get_bodyweight()['weight'][0]
+            date = weight_data['date']
+            weight = weight_data['weight']
+
+            print("*"*100)
+            print(date, weight)
+            print("*"*100)
+            try:
+                weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
+                weight_object.save()
+            except Exception:
+                pass
+
+    return redirect('/en/weight/overview/' + str(request.user))
 
 @login_required
 def export_csv(request):
