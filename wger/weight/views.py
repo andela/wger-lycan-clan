@@ -18,6 +18,7 @@ import logging
 import csv
 import datetime
 import fitbit
+import os
 
 from django.contrib.staticfiles.templatetags import staticfiles
 from django.shortcuts import render, redirect
@@ -114,8 +115,8 @@ def get_fitbit_token(request):
 def getweight(request, token=None):
     if token:
      
-        client_secret = '638c39989b5ef339c16c65ae55304c67'
-        client_key = '228LLX'
+        client_secret = os.getenv('FITBIT_SECRET')
+        client_key = os.getenv('228LLX')
         token = token
 
         authorized_client = fitbit.Fitbit(client_key, client_secret,
