@@ -123,7 +123,7 @@ class PlanEditView(WgerFormMixin, UpdateView):
         return context
 
 
-def view(request, id,use_cache=True):
+def view(request, id, use_cache=True):
     '''
     Show the nutrition plan with the given ID
     '''
@@ -162,9 +162,7 @@ def view(request, id,use_cache=True):
             plan.get_nutritional_values()
     else:
         template_data['nutritional_data'] = cache_plan
-
-
-    return render(request,'plan/view.html', template_data)
+    return render(request, 'plan/view.html', template_data)
 
 
 @login_required
