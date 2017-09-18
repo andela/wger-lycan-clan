@@ -18,7 +18,7 @@ import logging
 import csv
 import datetime
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -100,6 +100,10 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
         '''
         return reverse('weight:overview', kwargs={'username': self.object.user.username})
 
+@login_required
+def get_fitbit_token(request):
+    print("dkbfvkdfbvkdfbvkbdfkvbdfkvbdkfbvkdfbvkdfbvjkdfbvkdfjbvkjdfbvkdfbvkjd")
+    return redirect('/')
 
 @login_required
 def export_csv(request):
