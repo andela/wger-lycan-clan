@@ -156,7 +156,7 @@ def view(request, id, use_cache=True):
     template_data['owner_user'] = user
     template_data['is_owner'] = is_owner
     template_data['show_shariff'] = is_owner
-    cache_plan = cache.get('result'+str(id))
+    cache_plan = cache.get('result' + str(id))
     if not cache_plan:
         template_data['nutritional_data'] = \
             plan.get_nutritional_values()
