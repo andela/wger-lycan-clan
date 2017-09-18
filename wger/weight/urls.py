@@ -36,6 +36,11 @@ urlpatterns = [
         name='get_token'
     ),
 
+    url(r'getweight/(?P<token>[\w.@+-]+)$',
+        views.getweight,
+        name='get_weight'
+    ),
+
     url(r'^export-csv/$',
         views.export_csv,
         name='export-csv'),
