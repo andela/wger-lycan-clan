@@ -15,6 +15,7 @@
 
 import logging
 from decimal import Decimal
+from django.test import override_settings
 
 from wger.core.tests.base_testcase import WorkoutManagerTestCase
 from wger.nutrition import models
@@ -23,6 +24,11 @@ from wger.utils.constants import TWOPLACES
 logger = logging.getLogger(__name__)
 
 
+@override_settings(CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+})
 class NutritionalValuesCalculationsTestCase(WorkoutManagerTestCase):
     '''
     Tests the nutritional values calculators in the different models

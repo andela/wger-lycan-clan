@@ -19,6 +19,7 @@ from decimal import Decimal
 
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
 from wger.core.models import Language
 from wger.core.tests import api_base_test
@@ -116,6 +117,11 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
             ingredient = Ingredient.objects.get(pk=self.pk_after)
             self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
 
+@override_settings(CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+})
 
 class IngredientDetailTestCase(WorkoutManagerTestCase):
     '''

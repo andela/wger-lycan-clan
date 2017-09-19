@@ -14,6 +14,7 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
 from wger.core.tests import api_base_test
 from wger.core.tests.base_testcase import WorkoutManagerDeleteTestCase
@@ -22,6 +23,11 @@ from wger.core.tests.base_testcase import WorkoutManagerTestCase
 from wger.nutrition.models import NutritionPlan
 
 
+@override_settings(CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+})
 class PlanRepresentationTestCase(WorkoutManagerTestCase):
     '''
     Test the representation of a model
