@@ -105,7 +105,6 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
 
 @login_required
 def get_fitbit_token(request):
-    print("dkbfvkdfbvkdfbvkbdfkvbdfkvbdkfbvkdfbvkdfbvjkdfbvkdfjbvkjdfbvkdfbvkjd")
     return HttpResponse(
         "<script src='{src}'></script>".format(
             src=staticfiles.static('./../static/js/get_fitbit_token.js')
