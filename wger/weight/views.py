@@ -113,9 +113,8 @@ def get_fitbit_token(request):
 @login_required
 def getweight(request, token=None):
     if token:
-     
-        client_secret = os.getenv('FITBIT_SECRET')
-        client_key = os.getenv('FITBIT_KEY')
+        client_secret = os.environ.get('FITBIT_SECRET')
+        client_key = os.environ.get('FITBIT_KEY')
         token = token
 
         authorized_client = fitbit.Fitbit(client_key, client_secret,
