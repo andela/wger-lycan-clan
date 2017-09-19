@@ -117,12 +117,12 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
             ingredient = Ingredient.objects.get(pk=self.pk_after)
             self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
 
+
 @override_settings(CACHES={
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 })
-
 class IngredientDetailTestCase(WorkoutManagerTestCase):
     '''
     Tests the ingredient details page
