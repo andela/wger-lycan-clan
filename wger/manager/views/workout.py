@@ -59,18 +59,29 @@ logger = logging.getLogger(__name__)
 
 @login_required
 def export_workouts(request):
-        '''
-        Exports workouts
-        '''
-        # get all workouts
-        workouts = Workout.objects.filter(user=request.user)
-        # generate json data
-        data = serializers.serialize("json", workouts)
-        # create json response
-        response = HttpResponse(data, content_type='text/json')
-        # send response to data.json file
-        response['Content-Disposition'] = 'attachment; filename=data.json'
-        return response
+    '''
+    Exports workouts
+    '''
+    # get all workouts
+    workouts = Workout.objects.filter(user=request.user)
+    # generate json data
+    data = serializers.serialize("json", workouts)
+    # create json response
+    response = HttpResponse(data, content_type='text/json')
+    # send response to data.json file
+    response['Content-Disposition'] = 'attachment; filename=data.json'
+    return response
+
+
+def query_set(request):
+    template_data = {}
+
+    workouts = Workout.objects.filter(user=request.user)
+    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
+    template_data['workouts'] = workouts
+    template_data['current_workout'] = current_workout
+
+    return template_data
 
 
 def import_workouts(request):
@@ -83,12 +94,7 @@ def import_workouts(request):
     for deserialized_object in serializers.deserialize("json", json.dumps(json1_data)):
         deserialized_object.save()
 
-    template_data = {}
-
-    workouts = Workout.objects.filter(user=request.user)
-    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
-    template_data['workouts'] = workouts
-    template_data['current_workout'] = current_workout
+    template_data = query_set(request)
 
     return render(request, 'workout/overview.html', template_data)
 
@@ -101,13 +107,7 @@ def overview(request):
     '''
     An overview of all the user's workouts
     '''
-
-    template_data = {}
-
-    workouts = Workout.objects.filter(user=request.user)
-    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
-    template_data['workouts'] = workouts
-    template_data['current_workout'] = current_workout
+    template_data = query_set(request)
 
     return render(request, 'workout/overview.html', template_data)
 
