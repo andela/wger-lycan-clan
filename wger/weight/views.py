@@ -125,15 +125,8 @@ def getweight(request, token=None):
             weight_data = authorized_client.get_bodyweight()['weight'][0]
             date = weight_data['date']
             weight = weight_data['weight']
-
-            print("*"*100)
-            print(date, weight)
-            print("*"*100)
-            try:
-                weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
-                weight_object.save()
-            except Exception:
-                pass
+            weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
+            weight_object.save()
 
     return redirect('/en/weight/overview/' + str(request.user))
 
