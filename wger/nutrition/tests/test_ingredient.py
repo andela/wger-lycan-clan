@@ -121,6 +121,7 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
 @override_settings(CACHES={
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'TIMEOUT': 30 * 24 * 60 * 60,
     }
 })
 class IngredientDetailTestCase(WorkoutManagerTestCase):
