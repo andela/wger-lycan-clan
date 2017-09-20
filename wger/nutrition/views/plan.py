@@ -146,6 +146,8 @@ def view(request, id, use_cache=True):
 
     # Get the nutritional info
     template_data['plan'] = plan
+    template_data['nutritional_data'] = \
+    plan.get_nutritional_values()
 
     # Get the weight entry used
     template_data['weight_entry'] = plan.get_closest_weight_entry()
@@ -156,12 +158,6 @@ def view(request, id, use_cache=True):
     template_data['owner_user'] = user
     template_data['is_owner'] = is_owner
     template_data['show_shariff'] = is_owner
-    cache_plan = cache.get('result' + str(id))
-    if not cache_plan:
-        template_data['nutritional_data'] = \
-            plan.get_nutritional_values()
-    else:
-        template_data['nutritional_data'] = cache_plan
     return render(request, 'plan/view.html', template_data)
 
 
