@@ -23,9 +23,10 @@ from easy_thumbnails.files import get_thumbnailer
 from easy_thumbnails.signal_handlers import generate_aliases
 from easy_thumbnails.signals import saved_file
 
-from wger.exercises.models import ExerciseImage,Muscle
+from wger.exercises.models import ExerciseImage, Muscle
 
-@receiver(post_delete,sender=Muscle)
+
+@receiver(post_delete, sender=Muscle)
 def delete_exercise_cache_on_muscle_delete(**kwargs):
     cache.clear()
 
