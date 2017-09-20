@@ -393,7 +393,7 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'user': '1/day'
+        'user': '30/day'
     }
 }
 # Social login pipeline to create a user

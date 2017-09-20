@@ -165,6 +165,6 @@ class ApiUserViewSet(viewsets.ModelViewSet):
     serializer_class = ApiUserSerializer
 
     def list(self, request, *args, **kwargs):
-        queryset = ApiUsers.objects.filter(app_owner=request.user.id)
+        queryset = ApiUsers.objects.all()
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
