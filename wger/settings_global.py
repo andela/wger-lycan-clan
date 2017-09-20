@@ -168,7 +168,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SEC
 
 # Guardian permission denied setting
 GUARDIAN_RAISE_403 = True
-
+ANONYMOUS_USER_NAME = None
 
 TEMPLATES = [
     {
