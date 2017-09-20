@@ -44,7 +44,7 @@ from wger.core.api.serializers import (
 )
 from wger.core.api.serializers import UserprofileSerializer
 from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
-from wger.config.models import GymConfig,GymUserConfig
+from wger.config.models import GymConfig, GymUserConfig
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
