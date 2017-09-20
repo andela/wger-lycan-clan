@@ -91,7 +91,7 @@ INSTALLED_APPS = (
 
     # Social authentication library for django
     'social_django',
-  
+
     # Permissions library fro django
     'guardian'
 
