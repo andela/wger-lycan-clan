@@ -474,8 +474,7 @@ if hasattr(args, 'number_nutrition_plans'):
             uid = str(uuid.uuid4()).split('-')
             start_date = datetime.date.today() - datetime.timedelta(days=random.randint(0, 100))
             nutrition_plan = NutritionPlan(language=Language.objects.all()[1],
-                                           description='Dummy nutrition plan - {0}'.format(
-                                               uid[1]),
+                                           description='Dummy nutrition plan - {0}'.format(uid[1]),
                                            creation_date=start_date)
             nutrition_plan.user = user
 

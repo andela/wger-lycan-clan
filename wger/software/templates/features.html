@@ -18,14 +18,55 @@
 {# Content #}
 {#         #}
 {% block content %}
-    <header>
+    <header id="header">
+      <div class="overlay"></div>
+        <nav class="navbar navbar-default">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">WGER</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#header">Home</a></li>
+              <li><a href="#services">Services</a></li>
+              <li><a href="#about">Features</a></li>
+              {% if allow_guest_users and not user.is_authenticated %}
+                  <li>
+                    <a href="{% url 'core:user:demo-entries' %}">
+                        {% trans "Demo" %}
+                    </a>
+                  </li>
+              {% endif %}
+
+              {% if not user.is_authenticated or user.userprofile.is_temporary %}
+                  {% if allow_registration %}
+                      <li>
+                        <a href="{% url 'core:user:registration' %}">
+                          {% trans "Register" %}
+                      </a>
+                    </li>
+                  {% endif %}
+
+                  <li>
+                    <a href="{% url 'core:user:login' %}">
+                        {% trans "Login" %}
+                    </a>
+                  </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
         <div class="container">
             <div class="intro-text">
                 <div class="intro-heading">{% trans "Welcome to wger" %}</div>
-                <div class="intro-lead-in">{% trans "Your body." %}</div>
-                <div class="intro-lead-in">{% trans "Your workouts." %}</div>
-                <div class="intro-lead-in">{% trans "Your data." %}</div>
-                <div class="intro-lead-in">{% trans "Your progress." %}</div>
+                <div id="typed-strings">
+                  <div class="intro-lead-in">{% trans "Your Body." %}</div>
+                  <div class="intro-lead-in">{% trans "Your Workouts." %}</div>
+                  <div class="intro-lead-in">{% trans "Your Data." %}</div>
+                  <div class="intro-lead-in">{% trans "Your Progress." %}</div>
+                </div>
+                <span id="typed"></span>
+
+                <div class='btn-container hidden'>
                 {% if allow_guest_users and not user.is_authenticated %}
                     <a href="{% url 'core:user:demo-entries' %}" class="page-scroll btn btn-xl" rel="nofollow" style="margin-top: 1em;">
                         {% trans "Try it now" %}
@@ -43,75 +84,81 @@
                         {% trans "Login" %}
                     </a>
                 {% endif %}
+              </div>
             </div>
         </div>
     </header>
 
+    <section id="services" class="section section-padded">
+  		<div class="container">
+  			<div class="row text-center title">
+  				<h2>{% trans "Your advantages" %}</h2>
+  				<h6 class="text-muted">
+            {% blocktrans trimmed %}
+                wger Workout Manager is a free, open source web application that manages
+                your exercises, workouts and nutrition.
+            {% endblocktrans %}
+          </h6>
+  			</div>
+  			<div class="row services">
+  				<div class="col-md-4">
+  					<div class="service">
+  						<div class="icon-holder">
+  							<img src="{% static 'images/icons/heart-blue.png' %}" alt="" class="icon">
+  						</div>
+  						<h4 class="heading">{% trans "Nutrition" %}</h4>
+  						<p class="description">
+                {% blocktrans trimmed %}
+                    Create your personal diet plan by creating as many meals with as many
+                    different ingredients as you need. The application will calculate the
+                    nutritional values (total energy, protein, carbohydrates, and so on)
+                    about the whole plan as well as the indivual meals.
+                {% endblocktrans %}
+              </p>
+  					</div>
+  				</div>
+  				<div class="col-md-4">
+  					<div class="service">
+  						<div class="icon-holder">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 34 32" class="icon" style="fill: #03A9FF">
+                  <title>calendar</title>
+                  <path d="M34 30.5v-19c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v19c0 0.276-0.224 0.5-0.5 0.5h-31c-0.276 0-0.5-0.224-0.5-0.5v-19c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v19c0 0.827 0.673 1.5 1.5 1.5h31c0.827 0 1.5-0.673 1.5-1.5zM4.5 23c-0.276 0-0.5 0.224-0.5 0.5s0.224 0.5 0.5 0.5h1.5v3.5c0 0.276 0.224 0.5 0.5 0.5s0.5-0.224 0.5-0.5v-3.5h6v3.5c0 0.276 0.224 0.5 0.5 0.5s0.5-0.224 0.5-0.5v-3.5h6v3.5c0 0.276 0.224 0.5 0.5 0.5s0.5-0.224 0.5-0.5v-3.5h6v3.5c0 0.276 0.224 0.5 0.5 0.5s0.5-0.224 0.5-0.5v-3.5h1.5c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-1.5v-5h1.5c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-1.5v-4.5c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v4.5h-6v-4.5c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v4.5h-6v-4.5c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v4.5h-6v-4.5c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v4.5h-1.5c-0.276 0-0.5 0.224-0.5 0.5s0.224 0.5 0.5 0.5h1.5v5h-1.5zM27 18v5h-6v-5h6zM20 18v5h-6v-5h6zM7 18h6v5h-6v-5zM28.5 3h4.25c0.087 0 0.25 0 0.25 0.5v4.5h-32v-4.5c0-0.276 0.224-0.5 0.5-0.5h4c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-4c-0.827 0-1.5 0.673-1.5 1.5v5c0 0.276 0.224 0.5 0.5 0.5h33c0.276 0 0.5-0.224 0.5-0.5v-5c0-1.106-0.646-1.5-1.25-1.5h-4.25c-0.276 0-0.5 0.224-0.5 0.5s0.224 0.5 0.5 0.5zM22.5 3c0.276 0 0.5-0.224 0.5-0.5s-0.224-0.5-0.5-0.5h-11c-0.276 0-0.5 0.224-0.5 0.5s0.224 0.5 0.5 0.5h11zM9 4.5v-4c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v4c0 0.276 0.224 0.5 0.5 0.5s0.5-0.224 0.5-0.5zM25.5 5c0.276 0 0.5-0.224 0.5-0.5v-4c0-0.276-0.224-0.5-0.5-0.5s-0.5 0.224-0.5 0.5v4c0 0.276 0.224 0.5 0.5 0.5z"></path>
+                  </svg>
+
+  						</div>
+  						<h4 class="heading">{% trans 'Diary' %}</h4>
+  						<p class="description">
+                {% blocktrans trimmed %}
+                    Enter the weights and repetitions you did for each exercise to generate
+                    diagrams that let you see at a glance how well you are doing. The raw
+                    numbers are of course still accessible.
+                {% endblocktrans %}
+                {% trans "You can also enter notes and a general impression (great, neutral, etc.)" %}
+              </p>
+  					</div>
+  				</div>
+  				<div class="col-md-4">
+  					<div class="service">
+  						<div class="icon-holder">
+  							<img src= "{% static 'images/icons/weight-blue.png' %}" alt="" class="icon">
+  						</div>
+  						<h4 class="heading">{% trans "Workouts" %}</h4>
+  						<p class="description">
+                {% blocktrans trimmed %}
+                    You can create and manage flexible workout routines for any goals you
+                    have. Select exactly which exercises you'll do and how many repetitions,
+                    time or distance you want to do them. You can also combine different
+                    workouts into a schedule.
+                {% endblocktrans %}
+              </p>
+  					</div>
+  				</div>
+  			</div>
+  		</div>
+      <div class="cut border-cut"></div>
+  	</section>
+
     <!-- Services Section -->
-    <section id="services" class="bg-darkest-gray">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="section-heading text-light">{% trans "Your advantages" %}</h2>
-                    <h3 class="section-subheading text-muted">
-                        {% blocktrans trimmed %}
-                            wger Workout Manager is a free, open source web application that manages
-                            your exercises, workouts and nutrition. It started as a pet project of
-                            mine to replace my growing collection of different spreadsheets, but it
-                            has become something other people could also find useful.
-                        {% endblocktrans %}
-                    </h3>
-                </div>
-            </div>
-            <div class="row text-center">
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-user fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading text-light">{% trans "Workouts" %}</h4>
-                    <p class="text-muted">
-                        {% blocktrans trimmed %}
-                            You can create and manage flexible workout routines for any goals you
-                            have. Select exactly which exercises you'll do and how many repetitions,
-                            time or distance you want to do them. You can also combine different
-                            workouts into a schedule.
-                        {% endblocktrans %}
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-cutlery fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading text-light">{% trans "Nutrition" %}</h4>
-                    <p class="text-muted">
-                        {% blocktrans trimmed %}
-                            Create your personal diet plan by creating as many meals with as many
-                            different ingredients as you need. The application will calculate the
-                            nutritional values (total energy, protein, carbohydrates, and so on)
-                            about the whole plan as well as the indivual meals.
-                        {% endblocktrans %}
-                    </p>
-                </div>
-                <div class="col-md-4">
-                    <span class="fa-stack fa-4x">
-                        <i class="fa fa-circle fa-stack-2x text-primary"></i>
-                        <i class="fa fa-line-chart fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <h4 class="service-heading text-light">{% trans 'Diary' %}</h4>
-                    <p class="text-muted">
-                        {% blocktrans trimmed %}
-                            Enter the weights and repetitions you did for each exercise to generate
-                            diagrams that let you see at a glance how well you are doing. The raw
-                            numbers are of course still accessible.
-                        {% endblocktrans %}
-                        {% trans "You can also enter notes and a general impression (great, neutral, etc.)" %}
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <section id="about" class="bg-light-gray">
         <div class="container">
@@ -143,6 +190,7 @@
                                 </div>
                             </div>
                         </li>
+
                         <li class="timeline-inverted">
                             <div class="timeline-image">
                                 <img class="img-circle img-responsive" src="{% static 'images/calendar.png' %}" alt="">
@@ -232,7 +280,29 @@
         </div>
     </section>
 
+<script type="text/javascript">
+  function prettyLog(str) {
+    console.log('%c ' + str, 'color: green; font-weight: bold;');
+  }
 
-
+  var typed = new Typed("#typed", {
+    stringsElement: '#typed-strings',
+    typeSpeed: 50,
+    backSpeed: 50,
+    backDelay: 1000,
+    startDelay: 1000,
+    loop: true,
+    onComplete: function(self) { prettyLog('onCmplete ' + self) },
+    preStringTyped: function(pos, self) { prettyLog('preStringTyped ' + pos + ' ' + self); },
+    onStringTyped: function(pos, self) { prettyLog('onStringTyped ' + pos + ' ' + self) },
+    onLastStringBackspaced: function(self) { prettyLog('onLastStringBackspaced ' + self) },
+    onTypingPaused: function(pos, self) { prettyLog('onTypingPaused ' + pos + ' ' + self) },
+    onTypingResumed: function(pos, self) { prettyLog('onTypingResumed ' + pos + ' ' + self) },
+    onReset: function(self) { prettyLog('onReset ' + self) },
+    onStop: function(pos, self) { prettyLog('onStop ' + pos + ' ' + self) },
+    onStart: function(pos, self) { prettyLog('onStart ' + pos + ' ' + self) },
+    onDestroy: function(self) { prettyLog('onDestroy ' + self) }
+});
+</script>
 
 {% endblock %}

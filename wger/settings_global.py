@@ -91,9 +91,10 @@ INSTALLED_APPS = (
 
     # Social authentication library for django
     'social_django',
-
+  
     # Permissions library fro django
     'guardian'
+
 )
 
 # added list of external libraries to be installed by bower
@@ -144,6 +145,7 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+
     'wger.utils.helpers.EmailAuthBackend',
     # Authentication backends for social networks
     'social_core.backends.google.GoogleOAuth2',
@@ -151,6 +153,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.facebook.FacebookOAuth2',
     # Permissions backend
     'guardian.backends.ObjectPermissionBackend',
+
 
 )
 
@@ -165,6 +168,7 @@ SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
 # GMAIL APP SECRET AND KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+
 
 # Guardian permission denied setting
 GUARDIAN_RAISE_403 = True
@@ -358,7 +362,8 @@ THUMBNAIL_ALIASES = {
 #
 # Django compressor
 #
-STATIC_ROOT = ''
+
+STATIC_ROOT = os.path.join(SITE_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
 # The default is not DEBUG, override if needed
@@ -396,6 +401,7 @@ REST_FRAMEWORK = {
         'user': '30/day'
     }
 }
+
 # Social login pipeline to create a user
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
@@ -409,6 +415,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+
 #
 # CORS headers: allow all hosts to access the API
 #
