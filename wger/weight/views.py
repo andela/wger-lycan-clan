@@ -34,14 +34,18 @@ from django.db.models import Min
 from django.db.models import Max
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
+from django.db import IntegrityError
+from django.contrib import messages
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from formtools.preview import FormPreview
 
+from wger.core.models import Language
 from wger.weight.forms import WeightForm
 from wger.weight.models import WeightEntry
+from wger.exercises.models import (Exercise, ExerciseCategory)
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
@@ -124,8 +128,45 @@ def getweight(request, token=None):
             weight_data = authorized_client.get_bodyweight()['weight'][0]
             date = weight_data['date']
             weight = weight_data['weight']
-            weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
-            weight_object.save()
+            try:
+                weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
+                weight_object.save()
+            except IntegrityError as e:
+                messages.info(request, _("You have already logged today's weight"))
+
+        if ExerciseCategory.objects.filter(name='Fitbit').exists():
+            print("Aaaaaaaaah!")
+            fitbit_category = ExerciseCategory()
+            fitbit_category.name = 'FitApp'
+            fitbit_category.save()
+        else:
+            print('Because you are a lannister')
+
+        if authorized_client.activities()['activities']:
+            activities = authorized_client.activities()['activities']
+            for activity in activities:
+                exercise = Exercise()
+                exercise.name_original = activity['activityParentName']
+                exercise.name = activity['activityParentName']
+                exercise.description = activity['description']
+                print(ExerciseCategory.objects.get(name='FitApp'))
+                exercise.category = ExerciseCategory.objects.get(name='FitApp')
+                exercise.language = Language.objects.get(short_name='en')
+                try:
+                    exercise.save()
+                except IntegrityError as e:
+                    messages.info(request, _("You have already logged today's exercises"))
+                
+
+
+            # all_data = authorized_client.activities()
+            # for i in all_data:
+            #     print(i)
+            # activities =all_data['activities']
+            # for act in activities:
+            #     print(act)
+        else:
+            print("No data")
 
     return redirect('/en/weight/overview/' + str(request.user))
 
