@@ -134,39 +134,26 @@ def getweight(request, token=None):
             except IntegrityError as e:
                 messages.info(request, _("You have already logged today's weight"))
 
-        if ExerciseCategory.objects.filter(name='Fitbit').exists():
-            print("Aaaaaaaaah!")
-            fitbit_category = ExerciseCategory()
-            fitbit_category.name = 'FitApp'
-            fitbit_category.save()
-        else:
-            print('Because you are a lannister')
-
         if authorized_client.activities()['activities']:
             activities = authorized_client.activities()['activities']
+            if not ExerciseCategory.objects.filter(name='Fitbit Exercises').exists():
+                exercise_category = ExerciseCategory()
+                exercise_category.name = 'Fitbit Exercises'
+                exercise_category.save()
+
             for activity in activities:
                 exercise = Exercise()
                 exercise.name_original = activity['activityParentName']
                 exercise.name = activity['activityParentName']
                 exercise.description = activity['description']
-                print(ExerciseCategory.objects.get(name='FitApp'))
-                exercise.category = ExerciseCategory.objects.get(name='FitApp')
+                exercise.category = ExerciseCategory.objects.get(name='Fitbit Exercises')
                 exercise.language = Language.objects.get(short_name='en')
+                exercise.status = 2
                 try:
                     exercise.save()
+                    messages.success(request, _("You have successfully synced your exercise data."))
                 except IntegrityError as e:
                     messages.info(request, _("You have already logged today's exercises"))
-                
-
-
-            # all_data = authorized_client.activities()
-            # for i in all_data:
-            #     print(i)
-            # activities =all_data['activities']
-            # for act in activities:
-            #     print(act)
-        else:
-            print("No data")
 
     return redirect('/en/weight/overview/' + str(request.user))
 
