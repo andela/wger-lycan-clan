@@ -86,8 +86,7 @@ def query_set(request):
 def import_workouts(request):
     file = request.FILES['import_file']
     data = file.read()
-    f = open(str(file), 'r')
-    json1_data = json.loads(f.read())
+    json1_data = json.loads(data)
     for value in json1_data:
         value['fields']['user'] = request.user.id
     for deserialized_object in serializers.deserialize("json", json.dumps(json1_data)):
