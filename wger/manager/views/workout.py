@@ -18,7 +18,6 @@ import logging
 import uuid
 import datetime
 import json
-import random
 
 from django.core import serializers
 from django.shortcuts import render, get_object_or_404
