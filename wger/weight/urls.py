@@ -36,6 +36,10 @@ urlpatterns = [
         name='get_token'
     ),
 
+    url(r'fitbit_auth/$',
+        views.get_fitbit_login,
+        name='fitbit-auth'),
+
     url(r'getweight/(?P<token>[\w.@+-]+)$',
         views.getweight,
         name='get_weight'
