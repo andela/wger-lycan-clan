@@ -1,36 +1,47 @@
-{% extends "base_wide.html" %}
-{% load i18n staticfiles cache wger_extras %}
+{% extends "base_wide.html" %} {% load i18n staticfiles cache wger_extras  svg%}
 
 <!--
         Title
 -->
-{% block title %}{% trans "Muscle overview" %}{% endblock %}
-
-
-{% block header %}
+{% block title %}{% trans "Muscle overview" %}{% endblock %} {% block header %}
 <script src="{% static 'js/exercises.js' %}"></script>
 
 <script>
-$(document).ready(function() {
-    //Prefetch the background images
-    {% for muscle in muscle_list|first %}
-        wgerPrefetchImages(['/static/images/muscles/main/muscle-' + {{muscle.id}} + '.svg']);
-    {% endfor %}
-    wgerPrefetchImages(['/static/images/muscles/muscular_system_back.svg']);
+    $(document).ready(function() {
+        //Prefetch the background images
+        {% for muscle in muscle_list %}
+        wgerPrefetchImages(['/static/images/muscles/main/muscle-' + {{muscle.id}} + '.svg']); 
+        {% endfor %}
+        wgerPrefetchImages(['/static/images/muscles/muscular_system_back.svg']);
 
 
-    // Hightlight the first element
-    wgerHighlightMuscle($('.muscle').first());
+        // Hightlight the first element
+        wgerHighlightMuscle($('.muscle').first());
 
-    // Highlight on hover
-    $('.muscle').hover(function(e) {
-        e.preventDefault();
-        wgerHighlightMuscle(this);
-    });
+        // Highlight on hover
+        $('.muscle').hover(function(e) {
+            e.preventDefault();
+            wgerHighlightMuscle(this);
+        });
 
-    // Highlight on click
+        // Highlight on hover
 
-});
+         var a = document.getElementsByTagName('svg')[0];
+         console.log(a)
+         a.addEventListener('load',function(e){
+               // get the inner DOM of alpha.svg
+                // get the inner element by id
+                g = a.getElementsByTagName('g')[0]
+                console.log(g)
+                g.addEventListener("click",function(e){
+                      var mId = this
+                      console.log(this)
+                // add behaviour
+                }, false);
+            }, false);
+
+   })
+
 </script>
 {% endblock %}
 
@@ -38,68 +49,55 @@ $(document).ready(function() {
 <!--
         Main Content
 -->
-{% block content %}
-{% cache cache_timeout muscle-overview language.id %}
-{% trans "Hover with the mouse over the muscles to show corresponding exercises." %}
+{% block content %} {% cache cache_timeout muscle-overview language.id %} {% trans "Hover with the mouse over the muscles to show corresponding exercises." %}
 
 <div class="row">
     <div class="col-sm-4 col-xs-6">
         <h4 style="padding-bottom:0.5em;">{% trans "Muscles" %}</h4>
-        <div id="muscle-system"
-             class="muscle-background"
-             style="background-image: url('/static/images/muscles/muscular_system_front.svg');">
+        <div id="muscle-system" class="muscle-background" style="background-image: url('/static/images/muscles/muscular_system_front.svg');" >
+            {% svg 'muscle-hover-front'  %}
+
         </div>
     </div>
     <div class="col-sm-4 col-xs-6">
-        {# Why do we need to use |first? #}
-        {% regroup muscle_list|first by is_front as muscle_group %}
-        {% for group in muscle_group %}
-            {% if group.grouper %}
-                <h4>{% trans "Front side" %}</h4>
-            {% else %}
-                <h4>{% trans "Back side" %}</h4>
-            {% endif %}
+        {# Why do we need to use |first? #} {% regroup muscle_list|first by is_front as muscle_group %} {% for group in muscle_group %} {% if group.grouper %}
+        <h4>{% trans "Front side" %}</h4>
+        {% else %}
+        <h4>{% trans "Back side" %}</h4>
+        {% endif %}
 
-            <ul class="muscle-list">
+        <ul class="muscle-list">
             {% for muscle in group.list %}
-            <li class="muscle"
-                data-target="muscle-{{muscle.id}}"
-                data-is-front="{{muscle.is_front}}"
-                data-name="{{muscle.name}}"
-                itemscope itemtype="http://schema.org/Muscle">
+            <li class="muscle" data-target="muscle-{{muscle.id}}" data-is-front="{{muscle.is_front}}" data-name="{{muscle.name}}" itemscope itemtype="http://schema.org/Muscle">
                 <span itemprop="name">{{muscle.name}}</span>
             </li>
             {% endfor %}
-            </ul>
+        </ul>
         {% endfor %}
     </div>
     <div class="col-sm-4 col-xs-12">
         {% for muscle in muscle_list|first %}
-            <div id="muscle-{{muscle.id}}" style="display:none;" class="exercise-list">
-                <h4>{% trans "Exercises" %}</h4>
-                <ul class="exercise-overview">
-                    {% for exercise in muscle.exercise_set.select_related %}
-                    {% if exercise.language in active_languages %}
-                    <li class="exercise">
-                        <a href="{{exercise.get_absolute_url}}">{{exercise}}</a>
-                    </li>
-                    {% endif %}
-                    {% empty %}
-                    <li>
-                        <em>{% trans "No exercises that mainly train this muscle" %}</em>
-                    </li>
-                    {% endfor %}
-                </ul>
-            </div>
+        <div id="muscle-{{muscle.id}}" style="display:none;" class="exercise-list">
+            <h4>{% trans "Exercises" %}</h4>
+            <ul class="exercise-overview">
+                {% for exercise in muscle.exercise_set.select_related %} {% if exercise.language in active_languages %}
+                <li class="exercise">
+                    <a href="{{exercise.get_absolute_url}}">{{exercise}}</a>
+                </li>
+                {% endif %} {% empty %}
+                <li>
+                    <em>{% trans "No exercises that mainly train this muscle" %}</em>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
         {% endfor %}
     </div>
 </div>
-{% endcache %}
-{% endblock %}
+{% endcache %} {% endblock %}
 
 
 <!--
         Side bar
 -->
-{% block sidebar %}
-{% endblock %}
+{% block sidebar %} {% endblock %}
