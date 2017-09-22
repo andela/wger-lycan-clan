@@ -91,6 +91,9 @@ INSTALLED_APPS = (
 
     # Social authentication library for django
     'social_django',
+
+    # HTTPS for localhost
+    'django_extensions',
 )
 
 # added list of external libraries to be installed by bower
@@ -157,7 +160,8 @@ SOCIAL_AUTH_TWITTER_SECRET = os.environ.get("SOCIAL_AUTH_TWITTER_SECRET")
 
 # GMAIL APP SECRET AND KEY
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get(
+    "SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET")
 
 
 TEMPLATES = [
@@ -361,9 +365,11 @@ COMPRESS_ROOT = STATIC_ROOT
 
 # BOWER binary
 if sys.platform.startswith('win32'):
-    BOWER_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'node_modules', '.bin', 'bower.cmd'))
+    BOWER_PATH = os.path.abspath(os.path.join(
+        BASE_DIR, '..', 'node_modules', '.bin', 'bower.cmd'))
 else:
-    BOWER_PATH = os.path.abspath(os.path.join(BASE_DIR, '..', 'node_modules', '.bin', 'bower'))
+    BOWER_PATH = os.path.abspath(os.path.join(
+        BASE_DIR, '..', 'node_modules', '.bin', 'bower'))
 
 #
 # Django Rest Framework
@@ -371,7 +377,8 @@ else:
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('wger.utils.permissions.WgerPermission',),
     'PAGINATE_BY': 20,
-    'PAGINATE_BY_PARAM': 'limit',  # Allow client to override, using `?limit=xxx`.
+    # Allow client to override, using `?limit=xxx`.
+    'PAGINATE_BY_PARAM': 'limit',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',

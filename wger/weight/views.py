@@ -17,6 +17,8 @@
 import logging
 import csv
 import datetime
+import requests
+import os
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -24,6 +26,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.utils import formats
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy
@@ -31,6 +34,7 @@ from django.db.models import Min
 from django.db.models import Max
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
+from django.shortcuts import redirect
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -42,6 +46,8 @@ from wger.weight.models import WeightEntry
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
+
+from fitbit import FitbitOauth2Client, Fitbit
 
 
 logger = logging.getLogger(__name__)
@@ -79,6 +85,15 @@ class WeightAddView(WgerFormMixin, CreateView):
         '''
         return reverse('weight:overview', kwargs={'username': self.object.user.username})
 
+    def get_token(self):
+        return HttpResponse("<script>window.location.replace('/en/weight/get-weight/' + window.location.href.split('#')[1].split('=')[1].split('&')[0]);</script > ")
+
+    def get_weight(self, token):
+        print("  ((-_-))   " * 10)
+        print("Token", token)
+        print("  ((-_-))   " * 10)
+        return redirect('/')
+
 
 class WeightUpdateView(WgerFormMixin, UpdateView):
     '''
@@ -89,7 +104,8 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super(WeightUpdateView, self).get_context_data(**kwargs)
-        context['form_action'] = reverse('weight:edit', kwargs={'pk': self.object.id})
+        context['form_action'] = reverse(
+            'weight:edit', kwargs={'pk': self.object.id})
         context['title'] = _('Edit weight entry for the %s') % self.object.date
 
         return context
@@ -161,6 +177,13 @@ def overview(request, username=None):
     return render(request, 'overview.html', template_data)
 
 
+def authorize_fitbit(request):
+    '''
+    Shows the page to authorize access to fitbit.abs
+    '''
+    return render(request, 'authenticate_fitbit.html')
+
+
 @api_view(['GET'])
 def get_weight_data(request, username=None):
     '''
@@ -208,7 +231,8 @@ class WeightCsvImportFormPreview(FormPreview):
         return context
 
     def done(self, request, cleaned_data):
-        weight_list, error_list = helpers.parse_weight_csv(request, cleaned_data)
+        weight_list, error_list = helpers.parse_weight_csv(
+            request, cleaned_data)
         WeightEntry.objects.bulk_create(weight_list)
         return HttpResponseRedirect(reverse('weight:overview',
                                             kwargs={'username': request.user.username}))

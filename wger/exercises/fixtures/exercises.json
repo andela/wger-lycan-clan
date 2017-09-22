@@ -2669,7 +2669,9 @@
             "uuid": "61271a8e-6a00-4898-8dc3-ea9ef913f25e",
             "muscles": [
                 2,
-                9
+                9,
+                17,
+                19
             ],
             "license": 1,
             "name": "Upright row, SZ-bar"
@@ -3099,7 +3101,8 @@
             "category": 13,
             "uuid": "5345766a-c092-457a-aa21-8ee6ffa855d4",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Lateral raises"
@@ -3119,7 +3122,8 @@
             "category": 13,
             "uuid": "79a3a34c-262f-4cae-b827-b5a85b11b860",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Lateral raises on cable, one armed"
@@ -3488,7 +3492,8 @@
             "category": 10,
             "uuid": "c376346a-1923-4468-9320-b0f480c46b1e",
             "muscles": [
-                14
+                14,
+                18
             ],
             "license": 1,
             "name": "Cable Woodchoppers"
@@ -4590,7 +4595,7 @@
             "creation_date": "2014-03-09",
             "category": 13,
             "uuid": "53ca25b3-61d9-4f72-bfdb-492b83484ff5",
-            "muscles": [],
+            "muscles": [17],
             "license": 1,
             "name": "Arnold Shoulder Press"
         },
@@ -4640,7 +4645,8 @@
             "category": 13,
             "uuid": "89e6d2ea-9a17-4a77-9a52-d5bcf39d57fd",
             "muscles": [
-                2
+                2,
+                17
             ],
             "license": 1,
             "name": "Military Press"
@@ -4785,7 +4791,8 @@
             "muscles_secondary": [],
             "description": "<p>Seated on a bench bWith the dumbbells on the floor bend over at 45 Degrees and then slowly raise each dumbbell to shoulder height and hold for a couple seconds before lowering to the starting position.\u00a0</p>\n<p>\u00a0</p>",
             "equipment": [
-                3
+                3,
+                19
             ],
             "creation_date": "2014-03-30",
             "category": 13,
@@ -5168,7 +5175,8 @@
             "category": 11,
             "uuid": "deb02a12-37ce-43d6-b3f2-c77ed2b4259f",
             "muscles": [
-                14
+                14,
+                18
             ],
             "license": 1,
             "name": "Upper External Oblique"
@@ -5844,7 +5852,7 @@
             "creation_date": "2014-12-17",
             "category": 13,
             "uuid": "a4dc0099-1e07-4731-835a-9b7bb8d05685",
-            "muscles": [],
+            "muscles": [19],
             "license": 2,
             "name": "Two Dumbbell clean and press"
         },
@@ -6214,7 +6222,8 @@
             "uuid": "97d7eba2-681f-4b14-8e78-7d9b5865d336",
             "muscles": [
                 2,
-                9
+                9,
+                19
             ],
             "license": 2,
             "name": "Upright Row w/ Dumbbells"
@@ -6461,7 +6470,8 @@
             "category": 10,
             "uuid": "a36f852f-a29f-4f93-81b6-1012047ac1ee",
             "muscles": [
-                6
+                6,
+                18
             ],
             "license": 2,
             "name": "Side Plank"
@@ -6726,7 +6736,8 @@
             "category": 8,
             "uuid": "2cd5e256-20a7-4bc8-a7a8-d62bf8ce00cf",
             "muscles": [
-                5
+                5,
+                20
             ],
             "license": 2,
             "name": "Barbell Triceps Extension"
@@ -6747,7 +6758,7 @@
             "creation_date": "2015-08-03",
             "category": 10,
             "uuid": "c788d643-150a-4ac7-97ef-84643c6419bf",
-            "muscles": [],
+            "muscles": [18],
             "license": 2,
             "name": "2 Handed Kettlebell swing"
         },
@@ -7505,7 +7516,7 @@
             "creation_date": "2016-02-15",
             "category": 8,
             "uuid": "22eb7cf6-bf6c-42c3-a1c8-85c2fc2ed931",
-            "muscles": [],
+            "muscles": [20],
             "license": 2,
             "name": "Standing Rope Forearm"
         },

@@ -27,6 +27,15 @@ urlpatterns = [
         login_required(views.WeightAddView.as_view()),
         name='add'),
 
+    url(r'^get-token/$',
+        login_required(views.WeightAddView.get_token),
+        name='get-token'),
+
+    url(r'^get-weight/(?P<token>[\w.@+-_d]+)$',
+        login_required(views.WeightAddView.get_weight),
+        name='get-weight'
+        ),
+
     url(r'^(?P<pk>\d+)/edit/$',
         login_required(views.WeightUpdateView.as_view()),
         name='edit'),
@@ -41,13 +50,22 @@ urlpatterns = [
     url(r'^overview/(?P<username>[\w.@+-]+)$',
         views.overview,
         name='overview'),
+
+    url(r'^authorize-fitbit/$',
+        views.authorize_fitbit,
+        name='authorize-fitbit'),
+
+    url(r'^sync-fitbit/$',
+        views.sync_fitbit_data,
+        name='sync-with-fitbit'),
+
     # url(r'^overview/$',
     #     views.overview,
     #     name='overview'),
-    url(r'^api/get_weight_data/(?P<username>[\w.@+-]+)$', # JS
+    url(r'^api/get_weight_data/(?P<username>[\w.@+-]+)$',  # JS
         views.get_weight_data,
         name='weight-data'),
-    url(r'^api/get_weight_data/$', # JS
+    url(r'^api/get_weight_data/$',  # JS
         views.get_weight_data,
         name='weight-data'),
 ]
