@@ -140,18 +140,28 @@ def getweight(request, token=None):
                 exercise_category = ExerciseCategory()
                 exercise_category.name = 'Fitbit Exercises'
                 exercise_category.save()
-
             for activity in activities:
-                exercise = Exercise()
-                exercise.name_original = activity['activityParentName']
-                exercise.name = activity['activityParentName']
-                exercise.description = activity['description']
-                exercise.category = ExerciseCategory.objects.get(name='Fitbit Exercises')
-                exercise.language = Language.objects.get(short_name='en')
-                exercise.user = request.user
-                exercise.status = 2
+                exercise_object = Exercise.objects.create(
+                    name_original=activity['activityParentName'],
+                    name=activity['activityParentName'],
+                    description=activity['description'],
+                    category=ExerciseCategory.objects.get(name='Fitbit Exercises'),
+                    language=Language.objects.get(short_name='en'),
+                    user=request.user,
+                    status=2
+                    )
+
+            # for activity in activities:
+            #     exercise = Exercise()
+            #     exercise.name_original = activity['activityParentName']
+            #     exercise.name = activity['activityParentName']
+            #     exercise.description = activity['description']
+            #     exercise.category = ExerciseCategory.objects.get(name='Fitbit Exercises')
+            #     exercise.language = Language.objects.get(short_name='en')
+            #     exercise.user = request.user
+            #     exercise.status = 2
                 try:
-                    exercise.save()
+                    exercise_object.save()
                     messages.success(request, _("You have successfully synced your exercise data."))
                 except IntegrityError as e:
                     messages.info(request, _("You have already logged today's exercises"))
