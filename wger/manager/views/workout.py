@@ -17,15 +17,18 @@
 import logging
 import uuid
 import datetime
+import json
 
+from django.core import serializers
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponse
 from django.template.context_processors import csrf
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView, UpdateView
+
 
 from wger.core.models import (
     RepetitionUnit,
@@ -53,6 +56,61 @@ from wger.utils.helpers import make_token
 logger = logging.getLogger(__name__)
 
 
+@login_required
+def export_workouts(request, pk):
+    '''
+    Makes a copy of a workout
+    '''
+    res = []
+    workout = get_object_or_404(Workout, pk=pk)
+    workouts = Workout.objects.filter(id=pk)
+    workouts = serializers.serialize("json", workouts)
+
+    response = HttpResponse(workouts, content_type='text/json')
+    # send response to data.json file
+    response['Content-Disposition'] = 'attachment; filename=' + str(workout) + '.json'
+    return response
+
+
+def query_set(request):
+    template_data = {}
+
+    workouts = Workout.objects.filter(user=request.user)
+    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
+    template_data['workouts'] = workouts
+    template_data['current_workout'] = current_workout
+    return template_data
+
+
+def import_workouts(request):
+
+    template_data = query_set(request)
+
+    if request.method == 'POST':
+        file = request.FILES['import_file']
+        data = file.read().decode("utf-8")
+        data_json = json.loads(data)
+        try:
+            check_workout = Workout.objects.filter(comment=data_json[0]['fields']['comment'],
+                                                   user=request.user)
+            if(check_workout):
+                template_data['error'] = 'Workout with the same name already exists'
+            else:
+                workout = get_object_or_404(Workout, pk=data_json[0]['pk'])
+                days = workout.day_set.all()
+                workout_import = workout
+                workout_import.pk = None
+                workout_import.comment = data_json[0]['fields']['comment']
+                workout_import.user = request.user
+                workout_import.save()
+                export_copy(days, workout_import)
+                template_data['success'] = 'Workout successfully imported'
+        except Exception as e:
+            template_data['error'] = 'Error in importing workouts'
+
+    return render(request, 'workout/overview.html', template_data)
+
+
 # ************************
 # Workout functions
 # ************************
@@ -61,13 +119,7 @@ def overview(request):
     '''
     An overview of all the user's workouts
     '''
-
-    template_data = {}
-
-    workouts = Workout.objects.filter(user=request.user)
-    (current_workout, schedule) = Schedule.objects.get_current_workout(request.user)
-    template_data['workouts'] = workouts
-    template_data['current_workout'] = current_workout
+    template_data = query_set(request)
 
     return render(request, 'workout/overview.html', template_data)
 
@@ -121,34 +173,7 @@ def view(request, pk):
     return render(request, 'workout/view.html', template_data)
 
 
-@login_required
-def copy_workout(request, pk):
-    '''
-    Makes a copy of a workout
-    '''
-
-    workout = get_object_or_404(Workout, pk=pk)
-    user = workout.user
-    is_owner = request.user == user
-
-    if not is_owner and not user.userprofile.ro_access:
-        return HttpResponseForbidden()
-
-    # Process request
-    if request.method == 'POST':
-        workout_form = WorkoutCopyForm(request.POST)
-
-        if workout_form.is_valid():
-
-            # Copy workout
-            days = workout.day_set.all()
-
-            workout_copy = workout
-            workout_copy.pk = None
-            workout_copy.comment = workout_form.cleaned_data['comment']
-            workout_copy.user = request.user
-            workout_copy.save()
-
+def export_copy(days, workout_copy):
             # Copy the days
             for day in days:
                 sets = day.set_set.all()
@@ -185,6 +210,38 @@ def copy_workout(request, pk):
                             setting_copy.pk = None
                             setting_copy.set = current_set_copy
                             setting_copy.save()
+
+
+@login_required
+def copy_workout(request, pk):
+    '''
+    Makes a copy of a workout
+    '''
+
+    workout = get_object_or_404(Workout, pk=pk)
+    user = workout.user
+    is_owner = request.user == user
+
+    if not is_owner and not user.userprofile.ro_access:
+        return HttpResponseForbidden()
+
+    # Process request
+    if request.method == 'POST':
+        workout_form = WorkoutCopyForm(request.POST)
+
+        if workout_form.is_valid():
+
+            # Copy workout
+            days = workout.day_set.all()
+
+            workout_copy = workout
+            workout_copy.pk = None
+            workout_copy.comment = workout_form.cleaned_data['comment']
+            workout_copy.user = request.user
+            workout_copy.save()
+
+            # copy workout fn
+            export_copy(days, workout_copy)
 
             return HttpResponseRedirect(reverse('manager:workout:view',
                                                 kwargs={'pk': workout.id}))
