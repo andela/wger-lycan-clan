@@ -17,8 +17,11 @@
 import logging
 import csv
 import datetime
+import fitbit
+import os
 
-from django.shortcuts import render
+from django.contrib.staticfiles.templatetags import staticfiles
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
@@ -31,14 +34,18 @@ from django.db.models import Min
 from django.db.models import Max
 from django.views.generic import CreateView
 from django.views.generic import UpdateView
+from django.db import IntegrityError
+from django.contrib import messages
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from formtools.preview import FormPreview
 
+from wger.core.models import Language
 from wger.weight.forms import WeightForm
 from wger.weight.models import WeightEntry
+from wger.exercises.models import (Exercise, ExerciseCategory)
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
@@ -100,6 +107,59 @@ class WeightUpdateView(WgerFormMixin, UpdateView):
         '''
         return reverse('weight:overview', kwargs={'username': self.object.user.username})
 
+@login_required
+def get_fitbit_token(request):
+    return HttpResponse(
+        "<script src='{src}'></script>".format(
+            src=staticfiles.static('./../static/js/get_fitbit_token.js')
+        ))
+
+@login_required
+def getweight(request, token=None):
+    if token:
+        client_secret = os.environ.get('FITBIT_SECRET')
+        client_key = os.environ.get('FITBIT_KEY')
+        token = token
+
+        authorized_client = fitbit.Fitbit(client_key, client_secret,
+                                     access_token=token, refresh_token=token)
+        
+        if authorized_client.get_bodyweight()['weight']:
+            weight_data = authorized_client.get_bodyweight()['weight'][0]
+            date = weight_data['date']
+            weight = weight_data['weight']
+            try:
+                weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
+                weight_object.save()
+            except IntegrityError as e:
+                messages.info(request, _("You have already logged today's weight"))
+
+        if authorized_client.activities()['activities']:
+            activities = authorized_client.activities()['activities']
+            if not ExerciseCategory.objects.filter(name='Fitbit Exercises').exists():
+                exercise_category = ExerciseCategory()
+                exercise_category.name = 'Fitbit Exercises'
+                exercise_category.save()
+
+            for activity in activities:
+                exercise = Exercise()
+                exercise.name_original = activity['activityParentName']
+                exercise.name = activity['activityParentName']
+                exercise.description = activity['description']
+                exercise.category = ExerciseCategory.objects.get(name='Fitbit Exercises')
+                exercise.language = Language.objects.get(short_name='en')
+                exercise.status = 2
+                try:
+                    exercise.save()
+                    messages.success(request, _("You have successfully synced your exercise data."))
+                except IntegrityError as e:
+                    messages.info(request, _("You have already logged today's exercises"))
+
+    return redirect('/en/weight/overview/' + str(request.user))
+
+@login_required
+def get_fitbit_login(request):
+    return redirect("https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=228LLX&redirect_uri=https%3A%2F%2Fwger-lycan.herokuapp.com%2Fen%2Fweight%2Ffitbit&scope=activity%20weight&expires_in=604800")
 
 @login_required
 def export_csv(request):

@@ -30,6 +30,20 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/edit/$',
         login_required(views.WeightUpdateView.as_view()),
         name='edit'),
+    
+    url(r'^fitbit/$',
+        views.get_fitbit_token,
+        name='get_token'
+    ),
+
+    url(r'fitbit_auth/$',
+        views.get_fitbit_login,
+        name='fitbit-auth'),
+
+    url(r'getweight/(?P<token>[\w.@+-]+)$',
+        views.getweight,
+        name='get_weight'
+    ),
 
     url(r'^export-csv/$',
         views.export_csv,

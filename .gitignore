@@ -63,3 +63,10 @@ target/
 # External Libraries
 wger/core/static/bower_components
 node_modules
+
+# Mac OS files
+.DS_Store
+
+# SSH files
+server.crt
+server.key
