@@ -251,6 +251,12 @@ $(document).ready(function() {
                {% trans "Make a copy of this workout" %}
             </a>
         </li>
+        <li>
+            <a href="{% url 'manager:workout:export' workout.id %}">
+               <span class="{% fa_class 'file-archive-o' %}"></span>
+               {% trans "Export workout" %}
+            </a>
+        </li>
         {% if is_owner %}
         <li role="separator" class="divider"></li>
         <li>
