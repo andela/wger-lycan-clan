@@ -49,7 +49,7 @@ patterns_workout = [
     url(r'^overview$',
         workout.overview,
         name='overview'),
-    url(r'^export$',
+    url(r'^(?P<pk>\d+)/export$',
         workout.export_workouts,
         name='export'),
     url(r'^import$',
