@@ -209,6 +209,8 @@ class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
                             max_length=36,
                             editable=False,
                             default=uuid.uuid4)
+    user = models.ForeignKey(User,
+                             verbose_name=_('User'), default='1')
     '''
     Globally unique ID, to identify the exercise across installations
     '''
