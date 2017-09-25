@@ -147,7 +147,6 @@ def getweight(request, token=None):
                     description=activity['description'],
                     category=ExerciseCategory.objects.get(name='Fitbit Exercises'),
                     language=Language.objects.get(short_name='en'),
-                    user=request.user,
                     status=2
                     )
 
