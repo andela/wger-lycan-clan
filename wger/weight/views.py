@@ -148,6 +148,7 @@ def getweight(request, token=None):
                 exercise.description = activity['description']
                 exercise.category = ExerciseCategory.objects.get(name='Fitbit Exercises')
                 exercise.language = Language.objects.get(short_name='en')
+                exercise.user = request.user
                 exercise.status = 2
                 try:
                     exercise.save()
