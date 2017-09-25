@@ -19,6 +19,7 @@ from decimal import Decimal
 
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
+from django.test import override_settings
 
 from wger.core.models import Language
 from wger.core.tests import api_base_test
@@ -117,6 +118,12 @@ class AddIngredientTestCase(WorkoutManagerAddTestCase):
             self.assertEqual(ingredient.status, Ingredient.INGREDIENT_STATUS_PENDING)
 
 
+@override_settings(CACHES={
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        'TIMEOUT': 30 * 24 * 60 * 60,
+    }
+})
 class IngredientDetailTestCase(WorkoutManagerTestCase):
     '''
     Tests the ingredient details page
