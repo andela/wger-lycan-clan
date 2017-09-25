@@ -32,6 +32,7 @@ djangorestframework>=3.2,<3.3
 django-filter
 django-tastypie
 django-cors-headers
+django-guardian==1.4.9
 
 # Python3 compatibility
 six
