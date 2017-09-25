@@ -32,7 +32,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django.utils import translation
 from django.conf import settings
-from django.db.models.signals import post_save
 
 from wger.core.models import Language
 from wger.utils.constants import TWOPLACES
@@ -158,7 +157,7 @@ class NutritionPlan(models.Model):
                     result[key][i] = Decimal(result[key][i]).quantize(TWOPLACES)
 
             cache.set("result" + str(self.id), result)
-            return result
+        return result
 
     def get_closest_weight_entry(self):
         '''
