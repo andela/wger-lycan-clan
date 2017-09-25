@@ -91,6 +91,8 @@ INSTALLED_APPS = (
 
     # Social authentication library for django
     'social_django',
+
+    'guardian',
 )
 
 # added list of external libraries to be installed by bower
