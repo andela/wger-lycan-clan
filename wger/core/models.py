@@ -16,10 +16,9 @@
 
 import datetime
 import decimal
-
 from django.db import models
 from django.db.models import IntegerField
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -647,3 +646,9 @@ class WeightUnit(models.Model):
         This is done basically to not litter the code with magic IDs
         '''
         return self.id in (1, 2)
+
+
+# Model to show users created via api
+class ApiUsers(models.Model):
+    app_owner = models.ForeignKey(User, related_name='app_owner')
+    app_user = models.ForeignKey(User, related_name='app_user')

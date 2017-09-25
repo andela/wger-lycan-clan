@@ -100,6 +100,9 @@ router.register(r'daysofweek', core_api_views.DaysOfWeekViewSet, base_name='days
 router.register(r'license', core_api_views.LicenseViewSet, base_name='license')
 router.register(r'setting-repetitionunit', core_api_views.RepetitionUnitViewSet, base_name='setting-repetition-unit')
 router.register(r'setting-weightunit', core_api_views.WeightUnitViewSet, base_name='setting-weight-unit')
+router.register(r'user',core_api_views.UserViewSet,base_name="user")
+router.register(r'apiusers',core_api_views.ApiUserViewSet,base_name="apiuser")
+
 
 # Exercises app
 router.register(r'exercise', exercises_api_views.ExerciseViewSet, base_name='exercise')
