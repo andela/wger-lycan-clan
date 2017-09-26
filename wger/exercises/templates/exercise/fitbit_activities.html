@@ -46,9 +46,9 @@ $(document).ready(function() {
     </tr>
     {% for activity in all_activities %}
         <tr>
-            <td>activity.name</td>
-            <td>activity.description</td>
-            <td>activity.creation_date</td>
+            <td>activity['name']</td>
+            <td>activity['description']</td>
+            <td>activity['creation_date']</td>
         </tr>
     {% endfor %}
 </table>
