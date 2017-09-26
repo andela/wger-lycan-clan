@@ -156,7 +156,6 @@ class ExerciseCategory(models.Model):
 
         super(ExerciseCategory, self).delete(*args, **kwargs)
 
-@python_2_unicode_compatible
 class FitbitActivities(models.Model):
     '''
     Model for an ectivity
