@@ -55,9 +55,9 @@ urlpatterns = [
         views.authorize_fitbit,
         name='authorize-fitbit'),
 
-    url(r'^sync-fitbit/$',
-        views.sync_fitbit_data,
-        name='sync-with-fitbit'),
+    # url(r'^sync-fitbit/$',
+    #     views.sync_fitbit_data,
+    #     name='sync-with-fitbit'),
 
     # url(r'^overview/$',
     #     views.overview,
