@@ -60,7 +60,7 @@ def get_activities(request):
         act.update({'creation_date': activity.creation_date})
         activities.append(act)
 
-    return render(request, 'exercise/fitbit_activities.html', all_activities)
+    return render(request, 'exercise/fitbit_activities.html', activities)
 
 @login_required
 def getweight(request, token=None):
