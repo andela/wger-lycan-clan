@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+{% load wger_extras %}
+{% load cache %}
+{% load thumbnail %}
+
+<!--
+        Title
+-->
+{% block title %}{% trans "Exercises" %}{% endblock %}
+
+
+
+{% block header %}
+<script>
+$(document).ready(function() {
+
+    // Init the autocompleter
+    $('#exercise-search').autocomplete({
+        serviceUrl: '{% url 'exercise-search' %}',
+        showNoSuggestionNotice: true,
+        dataType: 'json',
+        paramName: 'term',
+        groupBy: 'category',
+        minChars: 3,
+        onSelect: function (suggestion) {
+            window.location.href = '/exercise/' + suggestion.data.id + '/view/'
+        }
+    });
+});
+</script>
+{% endblock %}
+
+
+<!--
+        Main Content
+-->
+{% block content %}
+
+<table>
+    <tr>
+        <th>Activity Name</th>
+        <th>Activity description</th>
+        <th>Creation Date</th>
+    </tr>
+    {% for activity in all_activities %}
+        <tr>
+            <td>activity.name</td>
+            <td>activity.description</td>
+            <td>activity.creation_date</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+
+
+<!--
+        Side bar
+-->
+{% block sidebar %}
+<h4>{% trans "Search" %}</h4>
+    <input name="term"
+           type="search"
+           id="exercise-search"
+           class="ajax-form-element form-control"
+           placeholder="{% trans 'exercise name' %}">
+{% endblock %}

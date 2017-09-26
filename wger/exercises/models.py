@@ -157,10 +157,11 @@ class ExerciseCategory(models.Model):
         super(ExerciseCategory, self).delete(*args, **kwargs)
 
 @python_2_unicode_compatible
-class FitbitActivities(models.models):
+class FitbitActivities(models.Model):
     '''
     Model for an ectivity
     '''
+
     user = models.ForeignKey(User, verbose_name=_('User'), default='1')
 
     name = models.TextField(max_length=2000,

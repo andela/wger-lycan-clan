@@ -18,6 +18,8 @@
 from django.conf.urls import patterns, url, include
 from django.contrib.auth.decorators import login_required
 
+from wger.exercises import activities_views
+
 from wger.exercises.views import (
     exercises,
     comments,
@@ -26,8 +28,6 @@ from wger.exercises.views import (
     images,
     equipment
 )
-
-
 
 # sub patterns for muscles
 patterns_muscle = [
@@ -158,4 +158,5 @@ urlpatterns = [
    url(r'^category/', include(patterns_category, namespace="category")),
    url(r'^equipment/', include(patterns_equipment, namespace="equipment")),
    url(r'^', include(patterns_exercise, namespace="exercise")),
+   url(r'^fitbit_activities/$', activities_views.get_activities, name='fitbit-activities'),
 ]
