@@ -16,27 +16,35 @@
 # along with Workout Manager.  If not, see <http://www.gnu.org/licenses/>.
 
 from django.contrib.auth.models import User
+from django.utils import translation
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route
-
+from rest_framework.permissions import DjangoObjectPermissions
+from rest_framework import status
+from rest_framework.throttling import UserRateThrottle
 from wger.core.models import (
     UserProfile,
     Language,
     DaysOfWeek,
     License,
     RepetitionUnit,
-    WeightUnit)
+    WeightUnit,
+    ApiUsers
+)
 from wger.core.api.serializers import (
     UsernameSerializer,
     LanguageSerializer,
     DaysOfWeekSerializer,
     LicenseSerializer,
     RepetitionUnitSerializer,
-    WeightUnitSerializer
+    WeightUnitSerializer,
+    UserSerializer,
+    ApiUserSerializer
 )
 from wger.core.api.serializers import UserprofileSerializer
 from wger.utils.permissions import UpdateOnlyPermission, WgerPermission
+from wger.config.models import GymConfig, GymUserConfig
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -88,7 +96,7 @@ class DaysOfWeekViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = DaysOfWeek.objects.all()
     serializer_class = DaysOfWeekSerializer
     ordering_fields = '__all__'
-    filter_fields = ('day_of_week', )
+    filter_fields = ('day_of_week',)
 
 
 class LicenseViewSet(viewsets.ReadOnlyModelViewSet):
@@ -110,7 +118,7 @@ class RepetitionUnitViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = RepetitionUnit.objects.all()
     serializer_class = RepetitionUnitSerializer
     ordering_fields = '__all__'
-    filter_fields = ('name', )
+    filter_fields = ('name',)
 
 
 class WeightUnitViewSet(viewsets.ReadOnlyModelViewSet):
@@ -120,4 +128,43 @@ class WeightUnitViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = WeightUnit.objects.all()
     serializer_class = WeightUnitSerializer
     ordering_fields = '__all__'
-    filter_fields = ('name', )
+    filter_fields = ('name',)
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = (DjangoObjectPermissions,)
+    throttle_classes = (UserRateThrottle,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        created_user = User.objects.get(pk=serializer.data['id'])
+        # Pre-set some values of the user's profile
+        language = Language.objects.get(short_name=translation.get_language())
+        created_user.userprofile.notification_language = language
+        # Set default gym, if needed
+        gym_config = GymConfig.objects.get(pk=1)
+        if gym_config.default_gym:
+            created_user.userprofile.gym = gym_config.default_gym
+
+            # Create gym user configuration object
+            config = GymUserConfig()
+            config.gym = gym_config.default_gym
+            config.user = created_user
+            config.save()
+            created_user.userprofile.save()
+        ApiUsers.objects.create(app_owner=request.user, app_user=created_user)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class ApiUserViewSet(viewsets.ModelViewSet):
+    serializer_class = ApiUserSerializer
+
+    def list(self, request, *args, **kwargs):
+        queryset = ApiUsers.objects.all()
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

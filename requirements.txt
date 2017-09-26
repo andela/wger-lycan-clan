@@ -17,6 +17,7 @@ django-bootstrap-breadcrumbs
 sphinx
 social-auth-app-django==1.2.0
 social-auth-core==1.4.0
+django-guardian==1.4.9
 
 django-sortedm2m
 django-bower
@@ -34,3 +35,4 @@ django-cors-headers
 
 # Python3 compatibility
 six
+

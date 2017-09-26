@@ -29,6 +29,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext_lazy, ugettext as _
 from django.views.generic import DeleteView, UpdateView
+from django.core.cache import cache
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4, cm
@@ -122,7 +123,7 @@ class PlanEditView(WgerFormMixin, UpdateView):
         return context
 
 
-def view(request, id):
+def view(request, id, use_cache=True):
     '''
     Show the nutrition plan with the given ID
     '''
@@ -157,7 +158,6 @@ def view(request, id):
     template_data['owner_user'] = user
     template_data['is_owner'] = is_owner
     template_data['show_shariff'] = is_owner
-
     return render(request, 'plan/view.html', template_data)
 
 
