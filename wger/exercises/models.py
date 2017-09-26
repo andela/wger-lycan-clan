@@ -156,6 +156,23 @@ class ExerciseCategory(models.Model):
 
         super(ExerciseCategory, self).delete(*args, **kwargs)
 
+@python_2_unicode_compatible
+class FitbitActivities(models.models):
+    '''
+    Model for an ectivity
+    '''
+    user = models.ForeignKey(User, verbose_name=_('User'), default='1')
+
+    name = models.TextField(max_length=2000,
+                            validators=[MinLengthValidator(2)])
+
+    description = models.TextField(max_length=2000,
+                            validators=[MinLengthValidator(30)])
+
+    creation_date = models.DateField(_('Date'),
+                                     auto_now_add=True,
+                                     null=True,
+                                     blank=True)
 
 @python_2_unicode_compatible
 class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):
