@@ -51,7 +51,7 @@ from wger.utils.generic_views import WgerFormMixin
 
 @login_required
 def get_activities(request):
-    all_activities = FitbitActivities.objects
+    all_activities = FitbitActivities.objects.all()
     return render(request, 'exercise/fitbit_activities.html', all_activities)
 
 @login_required
