@@ -169,10 +169,7 @@ class FitbitActivities(models.Model):
     description = models.TextField(max_length=2000,
                             validators=[MinLengthValidator(30)])
 
-    creation_date = models.DateField(_('Date'),
-                                     auto_now_add=True,
-                                     null=True,
-                                     blank=True)
+
 
 @python_2_unicode_compatible
 class Exercise(AbstractSubmissionModel, AbstractLicenseModel, models.Model):

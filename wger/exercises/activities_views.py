@@ -57,7 +57,6 @@ def get_activities(request):
         act = {}
         act.update({'name': activity.name})
         act.update({'description': activity.description})
-        act.update({'creation_date': activity.creation_date})
         activities.append(act)
 
     return render(request, 'exercise/fitbit_activities.html', activities)

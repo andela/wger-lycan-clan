@@ -42,14 +42,13 @@ $(document).ready(function() {
     <tr>
         <th>Activity Name</th>
         <th>Activity description</th>
-        <th>Creation Date</th>
+       
     </tr>
-    {% for activity in activities %}
+    {% for i in activities %}
         <tr>
             <td>activity['name']</td>
             <td>activity['description']</td>
-            <td>activity['creation_date']</td>
-        </tr>
+            </tr>
     {% endfor %}
 </table>
 
