@@ -131,6 +131,7 @@ def getweight(request, token=None):
             try:
                 weight_object = WeightEntry.objects.create(date=date, weight=weight, user=request.user)
                 weight_object.save()
+                messages.info(request, _("You have successfully logged today's weight"))
             except IntegrityError as e:
                 messages.info(request, _("You have already logged today's weight"))
 
