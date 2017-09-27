@@ -51,7 +51,7 @@ from wger.utils.generic_views import WgerFormMixin
 
 @login_required
 def get_activities(request):
-    all_activities = FitbitActivities.objects.all()
+    all_activities = FitbitActivities.objects.all().filter(user=request.user)
     if all_activities is None:
         messages.warning(request, _("There are no activities saved in the database"))
     activities = []
@@ -59,11 +59,11 @@ def get_activities(request):
         act = {}
         act.update({'name': activity.name})
         act.update({'description': activity.description})
+        messages.info(request, _((str(activity['name']) + '  ' + str(activity['description']))))
         activities.append(act)
 
+
     if len(activities) < 1:
-        messages.warning(request, _("No activities saved in the database"))
-    else:
-        messages.info(request, _(str(activities[0]['name'])))
+        messages.warning(request, _("User currently has no activities logged."))    
 
     return render(request, 'exercise/fitbit_activities.html', activities)
