@@ -52,11 +52,17 @@ from wger.utils.generic_views import WgerFormMixin
 @login_required
 def get_activities(request):
     all_activities = FitbitActivities.objects.all()
+    if all_activities is None:
+        messages.warning(request, _("There are no activities saved in the database"))
     activities = []
     for activity in all_activities:
         act = {}
         act.update({'name': activity.name})
         act.update({'description': activity.description})
         activities.append(act)
+
+    if len(activities) < 1:
+        messages.warning(request, _("No activities saved in the database"))
+
 
     return render(request, 'exercise/fitbit_activities.html', activities)
