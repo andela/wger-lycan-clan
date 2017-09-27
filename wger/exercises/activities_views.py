@@ -54,15 +54,12 @@ def get_activities(request):
     all_activities = FitbitActivities.objects.all().filter(user=request.user)
     if all_activities is None:
         messages.warning(request, _("There are no activities saved in the database"))
-    activities = []
     for activity in all_activities:
         act = {}
         act.update({'name': activity.name})
         act.update({'description': activity.description})
         messages.info(request, _(str(activity['name'])+'    '+str(activity['description']))
-        activities.append(act)
-
-
+    
     if len(activities) < 1:
         messages.warning(request, _("User currently has no activities logged."))    
 
