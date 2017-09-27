@@ -45,7 +45,7 @@ from formtools.preview import FormPreview
 from wger.core.models import Language
 from wger.weight.forms import WeightForm
 from wger.weight.models import WeightEntry
-from wger.exercises.models import (Exercise, ExerciseCategory)
+from wger.exercises.models import (FitbitActivities, Exercise, ExerciseCategory)
 from wger.weight import helpers
 from wger.utils.helpers import check_access
 from wger.utils.generic_views import WgerFormMixin
@@ -136,18 +136,17 @@ def getweight(request, token=None):
 
         if authorized_client.activities()['activities']:
             activities = authorized_client.activities()['activities']
-            if not ExerciseCategory.objects.filter(name='Fitbit Exercises').exists():
-                exercise_category = ExerciseCategory()
-                exercise_category.name = 'Fitbit Exercises'
-                exercise_category.save()
             for activity in activities:
-                exercise_object = Exercise.objects.create(
-                    name_original=activity['activityParentName'],
+                exercise_object = FitbitActivities.objects.create(
                     name=activity['activityParentName'],
                     description=activity['description'],
+<<<<<<< HEAD
                     category=ExerciseCategory.objects.get(name='Fitbit Exercises'),
                     language=Language.objects.get(short_name='en'),
                     status=2
+=======
+                    user=request.user
+>>>>>>> b37bbe460ecc05d8cd136fe44bf166c9af51105e
                     )
 
             # for activity in activities:
