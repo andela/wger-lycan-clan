@@ -63,6 +63,7 @@ def get_activities(request):
 
     if len(activities) < 1:
         messages.warning(request, _("No activities saved in the database"))
-
+    else:
+        messages.info(request, _(str(activities[0]['name'])))
 
     return render(request, 'exercise/fitbit_activities.html', activities)
