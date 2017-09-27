@@ -169,7 +169,7 @@ def getweight(request, token=None):
 
 @login_required
 def get_fitbit_login(request):
-    return redirect("https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=228LLX&redirect_uri=https%3A%2F%2Fwger-lycan.herokuapp.com%2Fen%2Fweight%2Ffitbit&scope=activity%20weight&expires_in=604800")
+    return redirect("https://www.fitbit.com/oauth2/authorize?response_type=token&client_id=228LLX&redirect_uri=https%3A%2F%2Fwger-lycan.herokuapp.com%2Fen%2Fdashboard&scope=activity%20weight&expires_in=604800")
 
 @login_required
 def export_csv(request):
