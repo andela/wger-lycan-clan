@@ -140,13 +140,7 @@ def getweight(request, token=None):
                 exercise_object = FitbitActivities.objects.create(
                     name=activity['activityParentName'],
                     description=activity['description'],
-<<<<<<< HEAD
-                    category=ExerciseCategory.objects.get(name='Fitbit Exercises'),
-                    language=Language.objects.get(short_name='en'),
-                    status=2
-=======
                     user=request.user
->>>>>>> b37bbe460ecc05d8cd136fe44bf166c9af51105e
                     )
 
             # for activity in activities:
