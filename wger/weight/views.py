@@ -143,16 +143,6 @@ def getweight(request, token=None):
                     description=activity['description'],
                     user=request.user
                     )
-
-            # for activity in activities:
-            #     exercise = Exercise()
-            #     exercise.name_original = activity['activityParentName']
-            #     exercise.name = activity['activityParentName']
-            #     exercise.description = activity['description']
-            #     exercise.category = ExerciseCategory.objects.get(name='Fitbit Exercises')
-            #     exercise.language = Language.objects.get(short_name='en')
-            #     exercise.user = request.user
-            #     exercise.status = 2
                 try:
                     exercise_object.save()
                     messages.success(request, _("You have successfully synced your exercise data."))
