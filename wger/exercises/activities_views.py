@@ -59,11 +59,11 @@ def get_activities(request):
         act = {}
         act.update({'name': activity.name})
         act.update({'description': activity.description})
-        messages.info(request, _((str(activity['name']) + '  ' + str(activity['description']))))
+        messages.info(request, _(str(activity['name'])+'    '+str(activity['description']))
         activities.append(act)
 
 
     if len(activities) < 1:
         messages.warning(request, _("User currently has no activities logged."))    
 
-    return render(request, 'exercise/fitbit_activities.html', activities)
+    return render(request, 'exercise/fitbit_activities.html', {'activities': activities})
